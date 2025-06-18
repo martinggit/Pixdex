@@ -51,17 +51,17 @@ export function HomeScreen() {
           </View>
         </View>
 
-          {tiposSeleccionados.includes(1) && (
+          {(tiposSeleccionados.length === 0 || tiposSeleccionados.includes(1)) && (
             <CajaContenido text="SERIES">
               <ContenidoList tipoId={1} generosFiltrados={generosSeleccionados} />
             </CajaContenido>
           )}
-          {tiposSeleccionados.includes(2) && (
+          {(tiposSeleccionados.length === 0 || tiposSeleccionados.includes(2)) && (
             <CajaContenido text="PELICULAS">
               <ContenidoList tipoId={2} generosFiltrados={generosSeleccionados} />
             </CajaContenido>
           )}
-          {tiposSeleccionados.includes(3) && (
+          {(tiposSeleccionados.length === 0 || tiposSeleccionados.includes(3)) && (
             <CajaContenido text="ANIME">
               <ContenidoList tipoId={3} generosFiltrados={generosSeleccionados} />
             </CajaContenido>

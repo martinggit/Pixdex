@@ -41,6 +41,9 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Filtrar Contenido</Text>
+          <Pressable onPress={onClose} style={styles.closeButton}>
+                <Text style={styles.closeText}>X</Text>
+          </Pressable>
           <ScrollView>
             <Text style={styles.sectionTitle}>Tipo</Text>
             {tiposContenidoAudiovisual.map((tipo) => (
@@ -72,17 +75,29 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
           </ScrollView>
 
           <View style={styles.buttonRow}>
-            <Pressable onPress={onClose} style={styles.cancelButton}>
-              <Text style={styles.cancelText}> CANCELAR </Text>
+            <Pressable
+                onPress={() => {
+                    setTiposSeleccionados([]);
+                    setGenerosSeleccionados([]);
+                    onApply([], []);
+                    onClose();
+                }}
+                style={styles.cancelButton}
+                >
+                <Text style={styles.cancelText}> CANCELAR </Text>
             </Pressable>
             <Pressable
-              onPress={() => {
-                onApply(tiposSeleccionados, generosSeleccionados);
-                onClose();
-              }}
-              style={styles.applyButton}>
-              <Text style={styles.applyText}> APLICAR </Text>
-            </Pressable>
+                onPress={() => {
+                    if (tiposSeleccionados.length === 0) {
+                    alert("Debes seleccionar al menos un tipo de contenido.");
+                    return;
+                    }
+                    onApply(tiposSeleccionados, generosSeleccionados);
+                    onClose();
+                }}
+                style={styles.applyButton}>
+                <Text style={styles.applyText}> APLICAR </Text>
+                </Pressable>
           </View>
         </View>
       </View>
@@ -97,6 +112,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
+  closeButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    padding: 5,
+    zIndex: 10,
+    },
+  closeText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    },
   container: {
     backgroundColor: colors.fondo,
     padding: 20,
