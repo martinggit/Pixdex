@@ -7,7 +7,7 @@ import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
-  const { slug } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
+  const { id } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -19,7 +19,7 @@ export default function ContenidoSlugRoute() {
     }
   };
 
-  const contenido = contenidosAudiovisuales.find((item) => item.nombre === slug);
+  const contenido = contenidosAudiovisuales.find((item) => item.nombre === id);
 
   const generos = contenido?.generos.map(
     (id) => generosContenidoAudiovisual.find((g) => g.id === id)?.nombre
@@ -33,14 +33,14 @@ export default function ContenidoSlugRoute() {
         <View style ={{alignSelf:"flex-start", marginLeft:"-25%"}}>
           <TouchableOpacity onPress={handleBack}>
             <Text style={styles.botonBack}>
-              <Ionicons name="arrow-back" size={14} color="white" /> BACK
+              <Ionicons name="arrow-back" size={14} color="white" /> VOLVER
             </Text>
           </TouchableOpacity>
         </View>
         
         <View style={styles.borde}>
           <View style={styles.imagePlaceholder}>
-            <Text style={{ color: "black", textAlign: "center" }}>{slug}</Text>
+            <Text style={{ color: "black", textAlign: "center" }}>{id}</Text>
           </View>
         
         <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
@@ -51,7 +51,7 @@ export default function ContenidoSlugRoute() {
 
         <Text style={styles.description}>{contenido?.descripcion}</Text>
         
-        <Text style={styles.genresTitle}>Genres</Text>
+        <Text style={styles.genresTitle}>Generos</Text>
         <View style={styles.genreList}>
           {generos?.map((genero, index) => (
             <Text key={index} style={styles.genre}>{genero}</Text>

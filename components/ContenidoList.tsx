@@ -6,14 +6,22 @@ import { ContenidoCard } from "./ContenidoCard";
 
 type ContenidoListProps = {
   tipoId: number;
+  generosFiltrados?: number[];
 };
 
-export function ContenidoList({tipoId} : ContenidoListProps) {
+export function ContenidoList({ tipoId, generosFiltrados }: ContenidoListProps) {
   const router = useRouter();
 
-  const filtrado = contenidosAudiovisuales.filter(
-    (contenido) => contenido.tipoId === tipoId
-  );
+  const filtrado = contenidosAudiovisuales.filter((contenido) => {
+    const coincideTipo = contenido.tipoId === tipoId;
+
+    const coincideGenero =
+      !generosFiltrados || generosFiltrados.length === 0
+        ? true
+        : contenido.generos.some((g) => generosFiltrados.includes(g));
+
+    return coincideTipo && coincideGenero;
+  });
 
   return (
     <FlatList
@@ -22,7 +30,7 @@ export function ContenidoList({tipoId} : ContenidoListProps) {
         <Link
           href={{
             pathname: ROUTES.DETAIL,
-            params: { slug: item.nombre },
+            params: { id: item.nombre },
           }}
           style={styles.cardLink}
         >

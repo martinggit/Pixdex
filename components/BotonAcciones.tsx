@@ -1,18 +1,18 @@
 import colors from "@/src/constants/colors";
 import Feather from "@expo/vector-icons/Feather";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-
-type CajaIndicadoraAccionesProps = {
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+type BotonAccionesProps = {
   text: string;
+  onPress?: () => void;
 };
 
-function CajaIndicadoraAcciones({ text }: CajaIndicadoraAccionesProps) {
+function BotonAcciones({ text, onPress }: BotonAccionesProps) {
   return (
-    <View style={styles.button}>
+    <TouchableOpacity onPress={onPress} style={styles.button}>
       <Feather name="settings" size={14} color="white" style={styles.icon} />
       <Text style={styles.text}>{text}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -39,5 +39,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export { CajaIndicadoraAcciones };
+export { BotonAcciones };
 

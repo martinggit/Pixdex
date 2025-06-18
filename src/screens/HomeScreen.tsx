@@ -1,18 +1,33 @@
-import { CajaIndicadoraAcciones } from "@/components/BotonAcciones";
+import { BotonAcciones } from "@/components/BotonAcciones";
 import { CajaContenido } from "@/components/CajaContenido";
 import { CajaJuegos } from "@/components/CajaJuegos";
 import { ContenidoList } from "@/components/ContenidoList";
+import { ModalFiltros } from "@/components/ModalFiltros";
 import colors from "@/src/constants/colors";
+import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export function HomeScreen() {
-  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [tiposSeleccionados, setTiposSeleccionados] = useState<number[]>([1, 2, 3]);
+  const [generosSeleccionados, setGenerosSeleccionados] = useState<number[]>([]);
+
+  const handleApplyFilters = (tipos: number[], generos: number[]) => {
+    setTiposSeleccionados(tipos);
+    setGenerosSeleccionados(generos);
+  };
+
   return (
     <ScrollView style={[styles.screenContainer]}>
+       <ModalFiltros
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onApply={handleApplyFilters}
+      />
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
           <Text style={styles.logoText}> Pixdex </Text>
-          <CajaIndicadoraAcciones text="FILTRAR"></CajaIndicadoraAcciones>
+          <BotonAcciones text="FILTRAR" onPress={() => setModalVisible(true)} />
         </View>
       </View>
 
@@ -36,17 +51,21 @@ export function HomeScreen() {
           </View>
         </View>
 
-        <CajaContenido text="SERIES">
-          <ContenidoList tipoId={1}/>
-        </CajaContenido>
-
-        <CajaContenido text="PELICULAS">
-          <ContenidoList tipoId={2}/>
-        </CajaContenido>
-
-        <CajaContenido text="ANIME">
-          <ContenidoList tipoId={3}/>
-        </CajaContenido>
+          {tiposSeleccionados.includes(1) && (
+            <CajaContenido text="SERIES">
+              <ContenidoList tipoId={1} generosFiltrados={generosSeleccionados} />
+            </CajaContenido>
+          )}
+          {tiposSeleccionados.includes(2) && (
+            <CajaContenido text="PELICULAS">
+              <ContenidoList tipoId={2} generosFiltrados={generosSeleccionados} />
+            </CajaContenido>
+          )}
+          {tiposSeleccionados.includes(3) && (
+            <CajaContenido text="ANIME">
+              <ContenidoList tipoId={3} generosFiltrados={generosSeleccionados} />
+            </CajaContenido>
+          )}
 
     </ScrollView>
   );
