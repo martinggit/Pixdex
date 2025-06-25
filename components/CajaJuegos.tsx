@@ -1,15 +1,17 @@
 import colors from "@/src/constants/colors";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type CajaJuegosProps = {
   backgroundColor: string;
   text: string;
   descripcion: string;
+  onPress?: () => void;
 };
 
-function CajaJuegos({ backgroundColor, text, descripcion }: CajaJuegosProps) {
+function CajaJuegos({ backgroundColor, text, descripcion, onPress }: CajaJuegosProps) {
   return (
+  <Pressable onPress={onPress}>
       <View style={[styles.container, { backgroundColor }]}>
         {/* Título */}
         <View style={styles.titleContainer}>
@@ -26,7 +28,7 @@ function CajaJuegos({ backgroundColor, text, descripcion }: CajaJuegosProps) {
           <Text style={styles.buttonText}>Jugar</Text>
         </View>
       </View>
-
+  </Pressable>
   );
 }
 

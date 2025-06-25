@@ -1,10 +1,10 @@
+import BotonVolver from "@/components/BotonVolver";
 import colors from "@/src/constants/colors";
 import { contenidosAudiovisuales } from "@/src/data/contenidosAudiovisuales";
 import { generosContenidoAudiovisual } from "@/src/data/generosContenidoAudiovisual";
 import { tiposContenidoAudiovisual } from "@/src/data/tiposContenidoAudiovisual";
-import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
   const { id } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
@@ -30,20 +30,13 @@ export default function ContenidoSlugRoute() {
   return (
 <ScrollView style={[styles.screenContainer]}>
     <View style={styles.container}>
-        <View style ={{alignSelf:"flex-start", marginLeft:"-25%"}}>
-          <TouchableOpacity onPress={handleBack}>
-            <Text style={styles.botonBack}>
-              <Ionicons name="arrow-back" size={14} color="white" /> VOLVER
-            </Text>
-          </TouchableOpacity>
-        </View>
-        
+        <BotonVolver onPress={handleBack} />
         <View style={styles.borde}>
           <View style={styles.imagePlaceholder}>
             <Text style={{ color: "black", textAlign: "center" }}>{id}</Text>
           </View>
         
-        <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
+          <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
         
         <View style={styles.tag}>
           <Text style={styles.tagText}>{tipo}</Text>
@@ -86,19 +79,6 @@ const styles = StyleSheet.create({
     borderWidth:3, 
     borderColor: colors.grisOscuro, 
     marginTop:30
-  },
-  botonBack:{
-    fontSize: 12,
-    color: "white",
-    fontFamily: "PixelFont",
-    padding: 5,
-    backgroundColor: "#6E59A5",
-    marginLeft: 100,
-    borderWidth: 3,
-    borderTopColor: "#9B87F5",
-    borderBottomColor: "#4A3D70",
-    borderLeftColor: "#9B87F5",
-    borderRightColor: "#4A3D70",
   },
   imagePlaceholder: {
     height: "60%",

@@ -4,14 +4,21 @@ import { CajaJuegos } from "@/components/CajaJuegos";
 import { ContenidoList } from "@/components/ContenidoList";
 import { ModalFiltros } from "@/components/ModalFiltros";
 import colors from "@/src/constants/colors";
+import { useNavigation, useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ROUTES } from "../navigation/routes";
 
 export function HomeScreen() {
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [tiposSeleccionados, setTiposSeleccionados] = useState<number[]>([1, 2, 3]);
   const [generosSeleccionados, setGenerosSeleccionados] = useState<number[]>([]);
+  const router = useRouter();
 
+  const goToAhorcado = () => {
+    router.push(ROUTES.AHORCADO);
+  };
   const handleApplyFilters = (tipos: number[], generos: number[]) => {
     setTiposSeleccionados(tipos);
     setGenerosSeleccionados(generos);
@@ -38,6 +45,7 @@ export function HomeScreen() {
               backgroundColor={colors.purpura}
               text="Desafío del Ahorcado"
               descripcion="Adivina los títulos letra por letra. ¿Cuántos puedes identificar?"
+              onPress={goToAhorcado}
             ></CajaJuegos>
           </View>
 
