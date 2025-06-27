@@ -4,13 +4,12 @@ import { CajaJuegos } from "@/components/CajaJuegos";
 import { ContenidoList } from "@/components/ContenidoList";
 import { ModalFiltros } from "@/components/ModalFiltros";
 import colors from "@/src/constants/colors";
-import { useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { ROUTES } from "../navigation/routes";
+import { ROUTES } from "../src/navigation/routes";
 
 export function HomeScreen() {
-  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [tiposSeleccionados, setTiposSeleccionados] = useState<number[]>([1, 2, 3]);
   const [generosSeleccionados, setGenerosSeleccionados] = useState<number[]>([]);

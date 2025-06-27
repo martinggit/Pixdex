@@ -1,16 +1,16 @@
 import BotonVolver from "@/components/BotonVolver";
+import ModalGenerico from "@/components/ModalGenerico";
 import colors from "@/src/constants/colors";
-import { ROUTES } from "@/src/navigation/routes";
 import { useNavigation, useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
   const navigation = useNavigation();
 
-  const goToAhorcado = () => {
-      router.push(ROUTES.AHORCADO);
-    };
+  const [modalVisible, setModalVisible] = useState(false);
+
   const handleBack = () => {
     if (navigation.canGoBack()) {
       router.back();
@@ -19,6 +19,10 @@ export default function ContenidoSlugRoute() {
     }
   };
 
+ const iniciarJuego = (nombre: string) => {
+    setModalVisible(false);
+    router.push({ pathname: "/juegos/juegoAhorcado", params: { nombre } }); // podés ajustar esta ruta
+  };
 
   return (
 <ScrollView style={[styles.screenContainer]}>
@@ -30,9 +34,11 @@ export default function ContenidoSlugRoute() {
                 <Text style ={styles.description}> Adivina los títulos de populares Shows de TV, 
                 Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
                 </Text>
-                <TouchableOpacity style={styles.button}> 
+
+                <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}> 
                     <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
                 </TouchableOpacity>
+
                 <Text style ={styles.players}> Mejores Jugadores </Text>
                 <View style ={styles.top5}>
                     <Text style={styles.jugador}>1. PixelMaster - 950 pts</Text>
@@ -44,6 +50,12 @@ export default function ContenidoSlugRoute() {
             </View>
         </View>
     </View>
+    {/* Modal genérico */}
+      <ModalGenerico
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onStart={iniciarJuego}
+      />
 </ScrollView>
   );
 }

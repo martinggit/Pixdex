@@ -1,4 +1,4 @@
-import { HomeScreen } from '@/src/screens/HomeScreen';
+import { HomeScreen } from '@/app/HomeScreen';
 
 export default HomeScreen;
 
