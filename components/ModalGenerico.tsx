@@ -27,7 +27,7 @@ export default function ModalGenerico({ visible, onClose, onStart }: Props) {
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Text style={styles.closeText}>✕</Text>
             </TouchableOpacity>
-          <Text style={styles.titulo}>Ingresá tu nombre</Text>
+          <Text style={styles.titulo}>Ingresá Tu Nombre</Text>
           <TextInput
             style={styles.input}
             placeholder="Nombre de jugador"

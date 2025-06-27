@@ -21,7 +21,7 @@ export default function ContenidoSlugRoute() {
 
  const iniciarJuego = (nombre: string) => {
     setModalVisible(false);
-    router.push({ pathname: "/juegos/juegoAhorcado", params: { nombre } }); // podés ajustar esta ruta
+    router.push({ pathname: "/juegos/juegoAhorcado", params: { nombre } });
   };
 
   return (
@@ -116,7 +116,7 @@ screenContainer: { flex: 1},
     },
   players: {
     color: colors.verde,
-    fontSize: 14,
+    fontSize: 20,
     fontFamily: "PixelFont",
     marginBottom: 10,
     marginLeft:20,
