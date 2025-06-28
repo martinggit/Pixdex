@@ -31,7 +31,7 @@ export default function ContenidoSlugRoute() {
         <View style={styles.borde}>
             <View style={styles.contentWrapper}>
                 <Text style ={styles.title}>Desafío del Ahorcado </Text>
-                <Text style ={styles.description}> Adivina los títulos de populares Shows de TV, 
+                <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
                 Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
                 </Text>
 
@@ -95,7 +95,7 @@ screenContainer: { flex: 1},
   },
   description: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: 18,
     lineHeight: 20,
     marginBottom: 20,
     marginLeft:20,
@@ -119,7 +119,7 @@ screenContainer: { flex: 1},
     fontSize: 20,
     fontFamily: "PixelFont",
     marginBottom: 10,
-    marginLeft:20,
+    marginHorizontal:70,
     },
   top5:{
     backgroundColor:colors.gris,
