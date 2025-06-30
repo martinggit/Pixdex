@@ -84,14 +84,10 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
                 }}
                 style={styles.cancelButton}
                 >
-                <Text style={styles.cancelText}> CANCELAR </Text>
+                <Text style={styles.cancelText}> QUITAR FILTRO </Text>
             </Pressable>
             <Pressable
                 onPress={() => {
-                    if (tiposSeleccionados.length === 0) {
-                    alert("Debes seleccionar al menos un tipo de contenido.");
-                    return;
-                    }
                     onApply(tiposSeleccionados, generosSeleccionados);
                     onClose();
                 }}

@@ -1,7 +1,7 @@
 import { contenidosAudiovisuales } from "@/src/data/contenidosAudiovisuales";
 import { ROUTES } from "@/src/navigation/routes";
-import { Link, useRouter } from "expo-router";
-import { FlatList, StyleSheet } from "react-native";
+import { Link } from "expo-router";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { ContenidoCard } from "./ContenidoCard";
 
 type ContenidoListProps = {
@@ -10,7 +10,6 @@ type ContenidoListProps = {
 };
 
 export function ContenidoList({ tipoId, generosFiltrados }: ContenidoListProps) {
-  const router = useRouter();
 
   const filtrado = contenidosAudiovisuales.filter((contenido) => {
     const coincideTipo = contenido.tipoId === tipoId;
@@ -22,6 +21,14 @@ export function ContenidoList({ tipoId, generosFiltrados }: ContenidoListProps) 
 
     return coincideTipo && coincideGenero;
   });
+
+   if (filtrado.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>Sin resultados</Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -47,8 +54,18 @@ export function ContenidoList({ tipoId, generosFiltrados }: ContenidoListProps) 
 
 const styles = StyleSheet.create({
   contentContainer: {
+    gap:10,
   },
   cardLink: {
     // sin padding ni margen vertical
+  },
+  emptyContainer: {
+    padding: 10,
+  },
+  emptyText: {
+    color: "white",
+    fontFamily: "PixelFont",
+    fontSize: 12,
+    padding:10,
   },
 });

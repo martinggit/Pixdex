@@ -2,8 +2,8 @@ import BotonVolver from "@/components/BotonVolver";
 import ModalGenerico from "@/components/ModalGenerico";
 import colors from "@/src/constants/colors";
 import { useNavigation, useRouter } from "expo-router";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function ContenidoSlugRoute() {
         onStart={iniciarJuego}
       />
 </ScrollView>
-  );
+);
 }
 
 const styles = StyleSheet.create({

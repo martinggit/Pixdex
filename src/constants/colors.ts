@@ -7,4 +7,5 @@ export default {
     grisOscuro: '#403E43',
     gris: '#8E9196',
     grisClaro: '#F6F6F7',
+    blanco:"fffff"
   };

@@ -5,14 +5,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface BotonVolverProps {
   onPress: () => void;
+  text?:string;
 }
 
-const BotonVolver: React.FC<BotonVolverProps> = ({ onPress }) => {
+const BotonVolver: React.FC<BotonVolverProps> = ({ onPress, text= "VOLVER" }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress}>
         <Text style={styles.botonBack}>
-          <Ionicons name="arrow-back" size={14} color="white" /> VOLVER
+          <Ionicons name="arrow-back" size={14} color="white" /> {text}
         </Text>
       </TouchableOpacity>
     </View>

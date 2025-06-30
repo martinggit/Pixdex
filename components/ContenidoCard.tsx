@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     borderColor: colors.grisOscuro,
     backgroundColor: "#1b1b1b",
     overflow: "hidden",
-    marginRight: 10,
   },
   image: {
     flex: 3,
