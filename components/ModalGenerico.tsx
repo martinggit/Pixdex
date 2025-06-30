@@ -1,7 +1,7 @@
 // components/ModalGenerico.tsx
-import { View, Modal, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import colors from "@/src/constants/colors";
 import { useState } from "react";
+import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 type Props = {
   visible: boolean;
@@ -36,7 +36,7 @@ export default function ModalGenerico({ visible, onClose, onStart }: Props) {
             onChangeText={setNombre}
           />
           <TouchableOpacity style={styles.boton} onPress={handleStart}>
-            <Text style={styles.botonTexto}>Empezar Juego</Text>
+            <Text style={styles.botonTexto}>INICIAR JUEGO</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,4 +1,4 @@
-import BotonVolver from "@/components/BotonVolver";
+import { BotonPix } from "@/components/BotonPix";
 import colors from "@/src/constants/colors";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -16,16 +16,21 @@ export default function ContenidoSlugRoute() {
   return (
 <ScrollView style={[styles.screenContainer]}>
     <View style={styles.container}>
-        <BotonVolver onPress={handleBack} text="SALIR" />
+        <BotonPix
+          text="VOLVER"
+          iconName="arrow-back"
+          onPress={handleBack}
+          iconFamily="Ionicons"
+        />
+
         <View style={styles.borde}>
             <View style={styles.contentWrapper}>
-                <Text style ={styles.title}>Desafío del Ahorcado </Text>
-                <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
-                Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
-                </Text>
 
-                <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}> 
-                    <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
+                <TouchableOpacity style={styles.button}> 
+                    <Text style ={styles.buttonText}> ADIVINAR TITULO </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}> 
+                    <Text style ={styles.buttonText}> ADIVINAR LETRA </Text>
                 </TouchableOpacity>
 
             </View>
@@ -76,13 +81,17 @@ screenContainer: { flex: 1},
     marginRight:20,
   },
   button: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.purpura,
-    padding:10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderWidth: 2,
-    borderColor:colors.verde,
-    marginHorizontal:"20%",
-    marginBottom:20,
-    },
+    borderTopColor: colors.purpuraClaro,
+    borderBottomColor: colors.purpuraOscuro,
+    borderLeftColor: colors.purpuraClaro,
+    borderRightColor: colors.purpuraOscuro,
+  },
   buttonText: {
     color:"white",
     fontFamily:"PixelFont",

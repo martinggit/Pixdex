@@ -1,4 +1,4 @@
-import { BotonAcciones } from "@/components/BotonAcciones";
+import { BotonPix } from "@/components/BotonPix";
 import { CajaContenido } from "@/components/CajaContenido";
 import { CajaJuegos } from "@/components/CajaJuegos";
 import { ContenidoList } from "@/components/ContenidoList";
@@ -18,10 +18,17 @@ export function HomeScreen() {
   const goToAhorcado = () => {
     router.push(ROUTES.AHORCADO);
   };
+
   const handleApplyFilters = (tipos: number[], generos: number[]) => {
     setTiposSeleccionados(tipos);
     setGenerosSeleccionados(generos);
   };
+
+  const tiposContenido = [
+  { id: 1, nombre: "SERIES" },
+  { id: 2, nombre: "PELICULAS" },
+  { id: 3, nombre: "ANIME" },
+  ];
 
   return (
     <ScrollView style={[styles.screenContainer]}>
@@ -33,7 +40,12 @@ export function HomeScreen() {
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
           <Text style={styles.logoText}> Pixdex </Text>
-          <BotonAcciones text="FILTRAR" onPress={() => setModalVisible(true)} />
+          <BotonPix
+            text="FILTRAR"
+            iconName="settings"
+            onPress={() => setModalVisible(true)}
+            iconFamily="Feather"
+          />
         </View>
       </View>
 
@@ -58,26 +70,19 @@ export function HomeScreen() {
           </View>
         </View>
 
-          {(tiposSeleccionados.length === 0 || tiposSeleccionados.includes(1)) && (
-            <CajaContenido text="SERIES">
-              <ContenidoList tipoId={1} generosFiltrados={generosSeleccionados} />
-            </CajaContenido>
-          )}
-          {(tiposSeleccionados.length === 0 || tiposSeleccionados.includes(2)) && (
-            <CajaContenido text="PELICULAS">
-              <ContenidoList tipoId={2} generosFiltrados={generosSeleccionados} />
-            </CajaContenido>
-          )}
-          {(tiposSeleccionados.length === 0 || tiposSeleccionados.includes(3)) && (
-            <CajaContenido text="ANIME">
-              <ContenidoList tipoId={3} generosFiltrados={generosSeleccionados} />
-            </CajaContenido>
-          )}
+        {tiposContenido.map((tipo) => {
+        const mostrar = tiposSeleccionados.length === 0 || tiposSeleccionados.includes(tipo.id);
+        if (!mostrar) return null;
 
+        return (
+          <CajaContenido key={tipo.id} text={tipo.nombre}>
+            <ContenidoList tipoId={tipo.id} generosFiltrados={generosSeleccionados} />
+          </CajaContenido>
+        );
+      })}
     </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
 screenContainer: { flex: 1},
   mainContent: {

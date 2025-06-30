@@ -1,4 +1,4 @@
-import BotonVolver from "@/components/BotonVolver";
+import { BotonPix } from "@/components/BotonPix";
 import ModalGenerico from "@/components/ModalGenerico";
 import colors from "@/src/constants/colors";
 import { useNavigation, useRouter } from "expo-router";
@@ -21,13 +21,18 @@ export default function ContenidoSlugRoute() {
 
  const iniciarJuego = (nombre: string) => {
     setModalVisible(false);
-    router.push({ pathname: "/juegos/juegoAhorcado", params: { nombre } });
+    router.push({ pathname: "../juegos/juegoAhorcado", params: { nombre } });
   };
 
   return (
 <ScrollView style={[styles.screenContainer]}>
     <View style={styles.container}>
-        <BotonVolver onPress={handleBack} />
+        <BotonPix
+          text="VOLVER"
+          iconName="arrow-back"
+          onPress={router.back}
+          iconFamily="Ionicons"
+        />
         <View style={styles.borde}>
             <View style={styles.contentWrapper}>
                 <Text style ={styles.title}>Desafío del Ahorcado </Text>

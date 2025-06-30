@@ -1,4 +1,4 @@
-import BotonVolver from "@/components/BotonVolver";
+import { BotonPix } from "@/components/BotonPix";
 import colors from "@/src/constants/colors";
 import { contenidosAudiovisuales } from "@/src/data/contenidosAudiovisuales";
 import { generosContenidoAudiovisual } from "@/src/data/generosContenidoAudiovisual";
@@ -30,7 +30,12 @@ export default function ContenidoSlugRoute() {
   return (
 <ScrollView style={[styles.screenContainer]}>
     <View style={styles.container}>
-        <BotonVolver onPress={handleBack} />
+        <BotonPix
+          text="VOLVER"
+          iconName="arrow-back"
+          onPress={handleBack}
+          iconFamily="Ionicons"
+        />
         <View style={styles.borde}>
           <View style={styles.imagePlaceholder}>
             <Text style={{ color: "black", textAlign: "center" }}>{id}</Text>
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
   },
   borde:{
     alignSelf:"center",
-    height:800, 
+    height:"250%", 
     width:"95%", 
     borderWidth:3, 
     borderColor: colors.grisOscuro, 
