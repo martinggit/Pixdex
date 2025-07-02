@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { createContext, useState } from "react";
-import { ITipoContenidoAudiovisual } from "../data/tiposContenidoAudiovisual";
 import { IContenidoAudiovisual } from "../data/contenidosAudiovisuales";
 import { IGeneroContenidoAudiovisual } from "../data/generosContenidoAudiovisual";
+import { ITipoContenidoAudiovisual } from "../data/tiposContenidoAudiovisual";
 
 interface IAudiovisualesContext {
   tipos: ITipoContenidoAudiovisual[];

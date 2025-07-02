@@ -1,9 +1,9 @@
 import { BotonPix } from "@/components/BotonPix";
 import colors from "@/src/constants/colors";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useContext } from "react";
 import { AudiovisualesContext } from "@/src/context/audiovisual-context";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useContext } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
   const { id } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
@@ -76,10 +76,6 @@ export default function ContenidoSlugRoute() {
 
 const styles = StyleSheet.create({
   screenContainer: { flex: 1},
-  mainContent: {
-    padding: 20,
-    gap: 20,
-  },
   container: {
     flex: 1,
     padding: 20,
@@ -91,7 +87,7 @@ const styles = StyleSheet.create({
   },
   borde:{
     alignSelf:"center",
-    height:"250%", 
+    height:800, 
     width:"95%", 
     borderWidth:3, 
     borderColor: colors.grisOscuro, 

@@ -6,16 +6,26 @@ import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 type Props = {
   visible: boolean;
   onClose: () => void;
-  onStart: (nombre: string) => void;
+  onConfirm: (inputValue: string) => void;  // Función que recibe el texto ingresado
+  titulo?: string;           
+  placeholder?: string;      
+  textoBoton?: string;      
 };
 
-export default function ModalGenerico({ visible, onClose, onStart }: Props) {
-  const [nombre, setNombre] = useState("");
+export default function ModalGenerico({
+  visible,
+  onClose,
+  onConfirm,
+  titulo = "Ingresá un texto",
+  placeholder = "Escribe aquí...",
+  textoBoton = "Confirmar",
+}: Props) {
+  const [inputValue, setInputValue] = useState("");
 
-  const handleStart = () => {
-    if (nombre.trim() !== "") {
-      onStart(nombre.trim());
-      setNombre(""); // limpiar input
+  const handleConfirm = () => {
+    if (inputValue.trim() !== "") {
+      onConfirm(inputValue.trim());
+      setInputValue(""); // limpiar input después de confirmar
     }
   };
 
@@ -27,16 +37,19 @@ export default function ModalGenerico({ visible, onClose, onStart }: Props) {
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                 <Text style={styles.closeText}>✕</Text>
             </TouchableOpacity>
-          <Text style={styles.titulo}>Ingresá Tu Nombre</Text>
+          
+          <Text style={styles.titulo}>{titulo}</Text>
+          
           <TextInput
             style={styles.input}
-            placeholder="Nombre de jugador"
+            placeholder={placeholder}
             placeholderTextColor="#aaa"
-            value={nombre}
-            onChangeText={setNombre}
+            value={inputValue}
+            onChangeText={setInputValue}
           />
-          <TouchableOpacity style={styles.boton} onPress={handleStart}>
-            <Text style={styles.botonTexto}>INICIAR JUEGO</Text>
+          
+          <TouchableOpacity style={styles.boton} onPress={handleConfirm}>
+            <Text style={styles.botonTexto}>{textoBoton}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -81,12 +94,6 @@ const styles = StyleSheet.create({
   },
   botonTexto: {
     color: "white",
-    fontFamily: "PixelFont",
-  },
-  cancelar: {
-    marginTop: 10,
-    color: colors.verde,
-    textDecorationLine: "underline",
     fontFamily: "PixelFont",
   },
   closeButton: {

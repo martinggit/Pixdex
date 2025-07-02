@@ -1,6 +1,6 @@
 import colors from "@/src/constants/colors";
-import { generosContenidoAudiovisual } from "@/src/data/generosContenidoAudiovisual";
-import { ImageBackground } from "expo-image";
+import { AudiovisualesContext } from "@/src/context/audiovisual-context";
+import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 type TContenidoCardProps = {
@@ -12,25 +12,25 @@ type TContenidoCardProps = {
   imageUrl: string;
 };
 
-export function ContenidoCard({
-  nombre,
-  generos,
-  imageUrl,
-}: TContenidoCardProps) {
-  // Buscar nombres de géneros por ID
+export function ContenidoCard({ nombre, generos, imageUrl }: TContenidoCardProps) {
+  const context = useContext(AudiovisualesContext);
+  if (!context) return null; // Protección si contexto no cargó aún
+
+  const { generos: generosContext } = context;
+
+  // Mapear id de géneros a nombres usando contexto
   const generosNombre = generos
-    .map((id) => generosContenidoAudiovisual.find((g) => g.id === id)?.nombre)
-    .filter(Boolean); // elimina undefined si algún ID no existe
+    .map((id) => generosContext.find((g) => g.id === id)?.nombre)
+    .filter(Boolean);
+
 
   return (
     <View style={styles.card}>
       {/* Imagen */}
-      <ImageBackground
-        source={{ uri: imageUrl }}
-        style={styles.image}
-        imageStyle={styles.imageInner}
-      >
-      </ImageBackground>
+      <View style={styles.imagePlaceholder}>
+        <Text style= {{color: "black", textAlign: "center",fontSize:10}}>{nombre}</Text>
+      </View>
+
 
       {/* Info abajo */}
       <View style={styles.info}>
@@ -58,24 +58,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#1b1b1b",
     overflow: "hidden",
   },
-  image: {
-    flex: 3,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageInner: {
-    resizeMode: "cover",
-  },
-  overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-  },
-  imageTitle: {
-    color: "white",
-    fontSize: 8,
-    fontFamily: "PixelFont",
-  },
   info: {
     flex: 1,
     padding: 5,
@@ -102,5 +84,11 @@ const styles = StyleSheet.create({
   genreText: {
     color: "white",
     fontSize: 8,
+  },
+  imagePlaceholder: {
+    flex:3,
+    backgroundColor: "#BEBEBE",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

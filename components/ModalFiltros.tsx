@@ -84,7 +84,7 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
                 }}
                 style={styles.cancelButton}
                 >
-                <Text style={styles.cancelText}> QUITAR FILTRO </Text>
+                <Text style={styles.cancelText}> RESET </Text>
             </Pressable>
             <Pressable
                 onPress={() => {

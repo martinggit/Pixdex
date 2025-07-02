@@ -30,7 +30,7 @@ export default function ContenidoSlugRoute() {
         <BotonPix
           text="VOLVER"
           iconName="arrow-back"
-          onPress={router.back}
+          onPress={handleBack}
           iconFamily="Ionicons"
         />
         <View style={styles.borde}>
@@ -59,7 +59,10 @@ export default function ContenidoSlugRoute() {
       <ModalGenerico
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onStart={iniciarJuego}
+        onConfirm={iniciarJuego}
+        titulo="Escribe tu nombre"
+        placeholder="Nombre de Jugador"
+        textoBoton="EMPEZAR JUEGO"
       />
 </ScrollView>
 );
@@ -67,10 +70,6 @@ export default function ContenidoSlugRoute() {
 
 const styles = StyleSheet.create({
 screenContainer: { flex: 1},
-  mainContent: {
-    padding: 20,
-    gap: 20,
-  },
  contentWrapper: {
     alignItems: "center",
     justifyContent: "center",
