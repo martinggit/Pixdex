@@ -27,15 +27,17 @@ export default function ContenidoSlugRoute() {
   return (
 <ScrollView style={[styles.screenContainer]}>
     <View style={styles.container}>
+      <View style={{ alignSelf: "flex-start" }}>
         <BotonPix
           text="VOLVER"
           iconName="arrow-back"
           onPress={handleBack}
           iconFamily="Ionicons"
         />
+      </View>
         <View style={styles.borde}>
             <View style={styles.contentWrapper}>
-                <Text style ={styles.title}>Desafío del Ahorcado </Text>
+                <Text style ={styles.title}>Desafío del Ahorcado</Text>
                 <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
                 Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
                 </Text>
@@ -44,7 +46,7 @@ export default function ContenidoSlugRoute() {
                     <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
                 </TouchableOpacity>
 
-                <Text style ={styles.players}> Mejores Jugadores </Text>
+                <Text style ={styles.players}>Mejores Jugadores</Text>
                 <View style ={styles.top5}>
                     <Text style={styles.jugador}>1. PixelMaster - 950 pts</Text>
                     <Text style={styles.jugador}>2. NinjaGamer - 900 pts</Text>
@@ -61,7 +63,7 @@ export default function ContenidoSlugRoute() {
         onClose={() => setModalVisible(false)}
         onConfirm={iniciarJuego}
         titulo="Escribe tu nombre"
-        placeholder="Nombre de Jugador"
+        placeholder="..."
         textoBoton="EMPEZAR JUEGO"
       />
 </ScrollView>
@@ -104,13 +106,13 @@ screenContainer: { flex: 1},
     marginBottom: 20,
     marginLeft:20,
     marginRight:20,
+    textAlign:"center",
   },
   button: {
     backgroundColor: colors.purpura,
     padding:10,
     borderWidth: 2,
     borderColor:colors.verde,
-    marginHorizontal:"20%",
     marginBottom:20,
     },
   buttonText: {
@@ -124,9 +126,10 @@ screenContainer: { flex: 1},
     fontFamily: "PixelFont",
     marginBottom: 10,
     marginHorizontal:70,
+    textAlign:"center",
     },
   top5:{
-    backgroundColor:colors.gris,
+    backgroundColor:colors.grisOscuro,
     height:200,
     width:250,
     gap:8,

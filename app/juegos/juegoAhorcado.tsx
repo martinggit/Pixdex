@@ -7,7 +7,7 @@ import { IContenidoAudiovisual } from "@/src/data/contenidosAudiovisuales";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
   const { contenidos } = useContext(AudiovisualesContext);
@@ -78,32 +78,39 @@ export default function ContenidoSlugRoute() {
               <Ionicons key={i} name="heart" size={20} color={colors.purpura} />
             ))}
           </View>
-          <Text style={{ fontSize: 12, color: colors.blanco}}> Jugador: {nombre}</Text>
-          <Text style={{ fontSize: 12, color: colors.blanco}}> Puntos: {puntos} </Text>
+          <View style={styles.jugador}>
+            <Text style={{ fontSize: 12, color: colors.blanco}}> Jugador: {nombre}</Text>
+            <Text style={{ fontSize: 12, color: colors.blanco}}> Puntos: {puntos} </Text>
+          </View>
         </View>
 
         <View style={styles.borde}>
-          {contenidoActual && estado === "jugando" && (
-          <>
-            <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-              <Text style={styles.buttonText}>ADIVINAR TITULO</Text>
-            </TouchableOpacity>
+          {contenidoActual && (
+            <>
+              {estado === "jugando" && (
+                <>
+                <View style={styles.botonesContainer}>
+                  <BotonPix text="ADIVINAR TITULO" onPress={() => setModalVisible(true)} />
+                  <BotonPix text="ADIVINAR LETRA" onPress={() => {}} />
+                </View>
+                </>
+              )}
 
-            {/* Imagen */}
-            <View style={styles.imagePlaceholder}>
-              <Text style={{ color: "black", textAlign: "center" }}>{contenidoActual.nombre}</Text>
-            </View>
+              {/* Imagen y letras SIEMPRE visibles */}
+              <View style={styles.imagePlaceholder}>
+                <Text style={{ color: "black", textAlign: "center" }}>{contenidoActual.nombre}</Text>
+              </View>
 
-             <View style={styles.panelLetras}>
-              <Text style={styles.letrasTexto}>
-                {contenidoActual.nombre
-                  .split("")
-                  .map((char) => (char === " " ? "  " : "_"))
-                  .join(" ")}
-              </Text>
-            </View>
-          </>
-        )}
+              <View style={styles.panelLetras}>
+                <Text style={styles.letrasTexto}>
+                  {contenidoActual.nombre
+                    .split("")
+                    .map((char) => (char === " " ? "  " : "_"))
+                    .join(" ")}
+                </Text>
+              </View>
+            </>
+          )}
         </View>
       </View>
 
@@ -142,11 +149,10 @@ container: {
   vidas: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
   },
   borde: {
     alignSelf: "center",
-    height: 800,
+    height: 650,
     width: "95%",
     borderWidth: 3,
     borderColor: colors.grisOscuro,
@@ -172,7 +178,7 @@ container: {
     fontSize: 14,
   },
   panelLetras: {
-    backgroundColor: "#3c3a45", // Gris oscuro, podés cambiarlo
+    backgroundColor: colors.grisOscuro, 
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -181,10 +187,8 @@ container: {
     marginVertical: 20,
   },
   letrasTexto: {
-    fontSize: 20,
-    color: "#ddd",
-    letterSpacing: 4,
-    fontFamily: "PixelFont", // Asegurate de que exista
+    fontSize: 22,
+    color: colors.blanco,
   },
   imagePlaceholder: {
     height: "60%",
@@ -195,5 +199,15 @@ container: {
     justifyContent: "center",
     alignItems: "center",
     alignSelf:"center",
+  },
+  botonesContainer: {
+    alignItems: "center",
+    justifyContent:"center",
+    marginBottom: 10,
+    marginTop:10,
+    gap:10,
+  },
+  jugador: {
+    flexDirection:"column",
   },
 });

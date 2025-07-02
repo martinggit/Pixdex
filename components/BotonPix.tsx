@@ -8,7 +8,7 @@ type IconFamily = 'Feather' | 'Ionicons';
 interface BotonPixProps {
   text: string;
   onPress: () => void;
-  iconName: string;
+  iconName?: string;
   iconFamily?: IconFamily;
   containerStyle?: ViewStyle;
   textStyle?: TextStyle;
@@ -28,7 +28,9 @@ export const BotonPix: React.FC<BotonPixProps> = ({
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, containerStyle]}>
-      <IconComponent name={iconName as any} size={iconSize} color="white" style={styles.icon} />
+       {iconName ? (
+        <IconComponent name={iconName as any} size={iconSize} color="white" style={styles.icon} />
+      ) : null}
       <Text style={[styles.text, textStyle]}>{text}</Text>
     </TouchableOpacity>
   );
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
     backgroundColor: colors.purpura,
     paddingHorizontal: 10,
     paddingVertical: 5,

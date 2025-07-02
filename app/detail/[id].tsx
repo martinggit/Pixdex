@@ -42,12 +42,14 @@ export default function ContenidoSlugRoute() {
   return (
 <ScrollView style={[styles.screenContainer]}>
     <View style={styles.container}>
+      <View style={{ alignSelf: "flex-start" }}>
         <BotonPix
           text="VOLVER"
           iconName="arrow-back"
           onPress={handleBack}
           iconFamily="Ionicons"
         />
+      </View>
         <View style={styles.borde}>
           <View style={styles.imagePlaceholder}>
             <Text style={{ color: "black", textAlign: "center" }}>{id}</Text>

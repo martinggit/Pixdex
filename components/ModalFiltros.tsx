@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.fondo,
     padding: 20,
-    borderRadius: 12,
     maxHeight: "80%",
   },
   title: {

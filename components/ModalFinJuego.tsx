@@ -13,8 +13,8 @@ export default function ModalFinJuego({
   visible,
   onConfirm,
   puntos,
-  titulo = "¡Juego terminado!",
-  textoBoton = "Volver al inicio",
+  titulo = "¡Juego Terminado!",
+  textoBoton = "SALIR",
 }: Props) {
   return (
     <Modal animationType="fade" transparent visible={visible}>
@@ -46,18 +46,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderColor: colors.verde,
     borderWidth: 2,
+    justifyContent:"center",
   },
   titulo: {
     fontSize: 18,
     fontFamily: "PixelFont",
     color: "white",
     marginBottom: 20,
+    textAlign:"center",
   },
   puntos: {
     fontSize: 16,
     color: colors.purpura,
     fontFamily: "PixelFont",
     marginBottom: 30,
+    textAlign:"center",
   },
   boton: {
     backgroundColor: colors.purpura,
@@ -69,5 +72,6 @@ const styles = StyleSheet.create({
   botonTexto: {
     color: "white",
     fontFamily: "PixelFont",
+    textAlign:"center",
   },
 });

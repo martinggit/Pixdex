@@ -4,11 +4,11 @@ import { CajaJuegos } from "@/components/CajaJuegos";
 import { ContenidoList } from "@/components/ContenidoList";
 import { ModalFiltros } from "@/components/ModalFiltros";
 import colors from "@/src/constants/colors";
+import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import { useRouter } from "expo-router";
-import { useState,useContext } from "react";
+import { useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ROUTES } from "../src/navigation/routes";
-import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 
 export function HomeScreen() {
   const { tipos, generos } = useContext(AudiovisualesContext); //tomo del contexto
@@ -93,7 +93,6 @@ screenContainer: { flex: 1},
     fontSize: 24,
     color: colors.purpura,
     fontFamily: "PixelFont",
-    fontWeight: "bold",
   },
   gamesRow: {
     flexDirection: "row",
