@@ -77,11 +77,13 @@ export default function ContenidoSlugRoute() {
 }
 
 const styles = StyleSheet.create({
-  screenContainer: { flex: 1},
-  container: {
-    flex: 1,
+  screenContainer: { 
     padding: 20,
     backgroundColor: colors.fondo,
+    flexGrow: 1,
+  },
+  container: {
+    flex: 1,
   },
   title: {
     color: "#fff",
@@ -89,14 +91,14 @@ const styles = StyleSheet.create({
   },
   borde:{
     alignSelf:"center",
-    height:800, 
     width:"95%", 
     borderWidth:3, 
     borderColor: colors.grisOscuro, 
-    marginTop:30
+    marginTop:30,
+    paddingBottom:20,
   },
   imagePlaceholder: {
-    height: "60%",
+    height: 450,
     width: "90%",
     marginTop:20,
     backgroundColor: "#BEBEBE",

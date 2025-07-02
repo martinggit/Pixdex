@@ -1,4 +1,4 @@
-import { API_URL } from "@/src/common/constants";
+import { API_URL } from "@/src/constants/API_URL";
 import { IContenidoAudiovisual } from "@/src/data/contenidosAudiovisuales";
 import { ITipoContenidoAudiovisual } from "@/src/data/tiposContenidoAudiovisual";
 import { IGeneroContenidoAudiovisual } from "../data/generosContenidoAudiovisual";

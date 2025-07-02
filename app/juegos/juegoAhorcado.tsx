@@ -63,7 +63,7 @@ export default function ContenidoSlugRoute() {
 }, []);
 
   return (
-<ScrollView style={styles.screenContainer}>
+<ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         {/* HEADER */}
         <View style={styles.header}>
@@ -134,7 +134,10 @@ export default function ContenidoSlugRoute() {
 
 
 const styles = StyleSheet.create({
-screenContainer: { flex: 1 },
+scrollContainer: {
+  backgroundColor: colors.fondo,
+  flexGrow: 1,
+  },
 container: {
     flex: 1,
     padding: 20,
@@ -152,13 +155,13 @@ container: {
   },
   borde: {
     alignSelf: "center",
-    height: 650,
     width: "95%",
     borderWidth: 3,
     borderColor: colors.grisOscuro,
     marginTop: 30,
     alignItems: "center",
     padding: 10,
+    paddingBottom:30,
   },
   button: {
     flexDirection: "row",
@@ -191,8 +194,8 @@ container: {
     color: colors.blanco,
   },
   imagePlaceholder: {
-    height: "60%",
-    width: "90%",
+    height:400,
+    width: "95%",
     marginTop:20,
     backgroundColor: "#BEBEBE",
     marginBottom: 20,

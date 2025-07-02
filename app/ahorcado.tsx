@@ -37,7 +37,7 @@ export default function ContenidoSlugRoute() {
       </View>
         <View style={styles.borde}>
             <View style={styles.contentWrapper}>
-                <Text style ={styles.title}>Desafío del Ahorcado</Text>
+                <Text style ={styles.title}>Desafío del Ahorcado </Text>
                 <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
                 Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
                 </Text>
@@ -47,13 +47,29 @@ export default function ContenidoSlugRoute() {
                 </TouchableOpacity>
 
                 <Text style ={styles.players}>Mejores Jugadores</Text>
-                <View style ={styles.top5}>
-                    <Text style={styles.jugador}>1. PixelMaster - 950 pts</Text>
-                    <Text style={styles.jugador}>2. NinjaGamer - 900 pts</Text>
-                    <Text style={styles.jugador}>3. MediaGuru - 870 pts</Text>
-                    <Text style={styles.jugador}>4. TVFanatic - 850 pts</Text>
-                    <Text style={styles.jugador}>5. AnimeWizard - 820 pts</Text>
+                <View style={styles.top5}>
+                  <View style={styles.jugadorFila}>
+                    <Text style={styles.nombreJugador}>1. PixelMaster</Text>
+                    <Text style={styles.puntaje}>950</Text>
+                  </View>
+                  <View style={styles.jugadorFila}>
+                    <Text style={styles.nombreJugador}>2. NinjaGamer</Text>
+                    <Text style={styles.puntaje}>900</Text>
+                  </View>
+                  <View style={styles.jugadorFila}>
+                    <Text style={styles.nombreJugador}>3. MediaGuru</Text>
+                    <Text style={styles.puntaje}>870</Text>
+                  </View>
+                  <View style={styles.jugadorFila}>
+                    <Text style={styles.nombreJugador}>4. TVFanatic</Text>
+                    <Text style={styles.puntaje}>850</Text>
+                  </View>
+                  <View style={styles.jugadorFila}>
+                    <Text style={styles.nombreJugador}>5. AnimeWizard</Text>
+                    <Text style={styles.puntaje}>820</Text>
+                  </View>
                 </View>
+
             </View>
         </View>
     </View>
@@ -75,7 +91,6 @@ screenContainer: { flex: 1},
  contentWrapper: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 20,
   },
   container: {
     flex: 1,
@@ -86,34 +101,32 @@ screenContainer: { flex: 1},
     fontSize: 24,
     color: colors.purpura,
     fontFamily: "PixelFont",
-    marginBottom: 20,
-    marginTop:20,
-    marginHorizontal:30,
+    textAlign:"center",
+    marginTop:30,
   },
   borde:{
     alignSelf:"center",
-    height:800, 
-    width:"95%", 
+    width:"100%", 
     borderWidth:3, 
     borderColor: colors.grisOscuro, 
     marginTop:30,
     alignItems: "center",
+    paddingBottom:30,
   },
   description: {
     color: "#fff",
     fontSize: 18,
     lineHeight: 20,
-    marginBottom: 20,
-    marginLeft:20,
-    marginRight:20,
+    marginHorizontal:20,
     textAlign:"center",
+    marginTop:30,
   },
   button: {
     backgroundColor: colors.purpura,
     padding:10,
     borderWidth: 2,
     borderColor:colors.verde,
-    marginBottom:20,
+    marginTop:30,
     },
   buttonText: {
     color:"white",
@@ -124,19 +137,31 @@ screenContainer: { flex: 1},
     color: colors.verde,
     fontSize: 20,
     fontFamily: "PixelFont",
-    marginBottom: 10,
-    marginHorizontal:70,
     textAlign:"center",
+    marginTop:30,
+    marginHorizontal:20,
     },
   top5:{
     backgroundColor:colors.grisOscuro,
     height:200,
     width:250,
-    gap:8,
+    gap:15,
     padding:15,
+    justifyContent:"center",
+    marginTop:30,
+    flexDirection:"column",
   },
-  jugador:{
-    color:"white",
-    fontSize:14,
+  jugadorFila: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  nombreJugador: {
+    color: "white",
+    fontSize: 16,
+  },
+  puntaje: {
+    color: colors.verde,
+    fontFamily: "PixelFont",
+    fontSize: 14,
   },
 });

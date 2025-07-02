@@ -6,7 +6,7 @@ import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 type Props = {
   visible: boolean;
   onClose: () => void;
-  onConfirm: (inputValue: string) => void;  // Función que recibe el texto ingresado
+  onConfirm: (inputValue: string) => void;  // Recibo el texto ingresado
   titulo?: string;           
   placeholder?: string;      
   textoBoton?: string;      
