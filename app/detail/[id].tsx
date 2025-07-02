@@ -1,15 +1,16 @@
 import { BotonPix } from "@/components/BotonPix";
 import colors from "@/src/constants/colors";
-import { contenidosAudiovisuales } from "@/src/data/contenidosAudiovisuales";
-import { generosContenidoAudiovisual } from "@/src/data/generosContenidoAudiovisual";
-import { tiposContenidoAudiovisual } from "@/src/data/tiposContenidoAudiovisual";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useContext } from "react";
+import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 
 export default function ContenidoSlugRoute() {
   const { id } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
   const router = useRouter();
   const navigation = useNavigation();
+
+  const { contenidos, generos, tipos } = useContext(AudiovisualesContext);
 
   const handleBack = () => {
     if (navigation.canGoBack()) {
@@ -19,13 +20,24 @@ export default function ContenidoSlugRoute() {
     }
   };
 
-  const contenido = contenidosAudiovisuales.find((item) => item.nombre === id);
+  // Buscar el contenido usando el contexto
+  const contenido = contenidos.find((item) => item.nombre === id);
 
-  const generos = contenido?.generos.map(
-    (id) => generosContenidoAudiovisual.find((g) => g.id === id)?.nombre
+  // Mapear los ids de géneros del contenido con los nombres del contexto
+  const generosNombres = contenido?.generos.map(
+    (generoId) => generos.find((g) => g.id === generoId)?.nombre
   );
 
-  const tipo = tiposContenidoAudiovisual.find((t) => t.id === contenido?.tipoId)?.singular;
+  // Buscar el tipo singular en contexto
+  const tipoNombre = tipos.find((t) => t.id === contenido?.tipoId)?.singular;
+
+  if (!contenido) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <Text style={{ color: "#fff" }}>Contenido no encontrado</Text>
+      </View>
+    );
+  }
 
   return (
 <ScrollView style={[styles.screenContainer]}>
@@ -44,14 +56,14 @@ export default function ContenidoSlugRoute() {
           <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
         
         <View style={styles.tag}>
-          <Text style={styles.tagText}>{tipo}</Text>
+          <Text style={styles.tagText}>{tipoNombre}</Text>
         </View>
 
         <Text style={styles.description}>{contenido?.descripcion}</Text>
         
         <Text style={styles.genresTitle}>Generos</Text>
         <View style={styles.genreList}>
-          {generos?.map((genero, index) => (
+          {generosNombres?.map((genero: string | undefined, index: number) => (
             <Text key={index} style={styles.genre}>{genero}</Text>
           ))}
         </View>

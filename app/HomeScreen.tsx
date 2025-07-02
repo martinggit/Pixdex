@@ -5,11 +5,13 @@ import { ContenidoList } from "@/components/ContenidoList";
 import { ModalFiltros } from "@/components/ModalFiltros";
 import colors from "@/src/constants/colors";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ROUTES } from "../src/navigation/routes";
+import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 
 export function HomeScreen() {
+  const { tipos, generos } = useContext(AudiovisualesContext); //tomo del contexto
   const [modalVisible, setModalVisible] = useState(false);
   const [tiposSeleccionados, setTiposSeleccionados] = useState<number[]>([1, 2, 3]);
   const [generosSeleccionados, setGenerosSeleccionados] = useState<number[]>([]);
@@ -24,11 +26,8 @@ export function HomeScreen() {
     setGenerosSeleccionados(generos);
   };
 
-  const tiposContenido = [
-  { id: 1, nombre: "SERIES" },
-  { id: 2, nombre: "PELICULAS" },
-  { id: 3, nombre: "ANIME" },
-  ];
+  // Si no hay tipos seleccionados, mostrar todos (del contexto)
+  const tiposMostrar = tiposSeleccionados.length > 0 ? tipos.filter(t => tiposSeleccionados.includes(t.id)) : tipos;
 
   return (
     <ScrollView style={[styles.screenContainer]}>
@@ -70,16 +69,12 @@ export function HomeScreen() {
           </View>
         </View>
 
-        {tiposContenido.map((tipo) => {
-        const mostrar = tiposSeleccionados.length === 0 || tiposSeleccionados.includes(tipo.id);
-        if (!mostrar) return null;
+        {tiposMostrar.map((tipo) => (
+        <CajaContenido key={tipo.id} text={tipo.plural}>
+          <ContenidoList tipoId={tipo.id} generosFiltrados={generosSeleccionados} />
+        </CajaContenido>
+      ))}
 
-        return (
-          <CajaContenido key={tipo.id} text={tipo.nombre}>
-            <ContenidoList tipoId={tipo.id} generosFiltrados={generosSeleccionados} />
-          </CajaContenido>
-        );
-      })}
     </ScrollView>
   );
 }
