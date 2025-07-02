@@ -1,8 +1,9 @@
-import { contenidosAudiovisuales } from "@/src/data/contenidosAudiovisuales";
 import { ROUTES } from "@/src/navigation/routes";
 import { Link } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { ContenidoCard } from "./ContenidoCard";
+import { AudiovisualesContext } from "@/src/context/audiovisual-context";
+import { useContext } from "react";
 
 type ContenidoListProps = {
   tipoId: number;
@@ -10,8 +11,10 @@ type ContenidoListProps = {
 };
 
 export function ContenidoList({ tipoId, generosFiltrados }: ContenidoListProps) {
+  const { contenidos, generos } = useContext(AudiovisualesContext);
 
-  const filtrado = contenidosAudiovisuales.filter((contenido) => {
+  //Filtrado usando el contexto
+    const filtrado = contenidos.filter((contenido) => {
     const coincideTipo = contenido.tipoId === tipoId;
 
     const coincideGenero =
