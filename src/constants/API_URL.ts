@@ -1,4 +1,5 @@
-export const API_URL = "http://192.168.1.31:8081";
+import { Platform } from "react-native";
 
-//Para android: "http://192.168.1.31:8081";
-//Para web: "http://localhost:8081";
+export const API_URL = Platform.OS === "android"
+    ? "http://{IP}:8081" // Android fisico
+    : "http://localhost:8081";   // Web

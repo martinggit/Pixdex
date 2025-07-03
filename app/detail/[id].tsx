@@ -4,6 +4,7 @@ import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useContext } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Etiqueta } from "@/components/Etiqueta";
 
 export default function ContenidoSlugRoute() {
   const { id } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
@@ -40,7 +41,8 @@ export default function ContenidoSlugRoute() {
   }
 
   return (
-<ScrollView style={[styles.screenContainer]}>
+<ScrollView style={[styles.screenContainer]}
+ contentContainerStyle={{ paddingBottom: 40, flexGrow: 1 }}>
     <View style={styles.container}>
       <View style={{ alignSelf: "flex-start" }}>
         <BotonPix
@@ -57,16 +59,18 @@ export default function ContenidoSlugRoute() {
         
           <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
         
-        <View style={styles.tag}>
-          <Text style={styles.tagText}>{tipoNombre}</Text>
+        <View style={{ marginLeft: 20, marginBottom: 15 }}>
+          {tipoNombre && <Etiqueta texto={tipoNombre} variant="detalle" />}
         </View>
 
         <Text style={styles.description}>{contenido?.descripcion}</Text>
         
         <Text style={styles.genresTitle}>Generos</Text>
         <View style={styles.genreList}>
-          {generosNombres?.map((genero: string | undefined, index: number) => (
-            <Text key={index} style={styles.genre}>{genero}</Text>
+          {generosNombres
+            ?.filter((g): g is string => typeof g === "string")
+            .map((genero, index) => (
+              <Etiqueta key={index} texto={genero} variant="detalle" />
           ))}
         </View>
 
@@ -84,10 +88,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-  },
-  title: {
-    color: "#fff",
-    fontSize: 24,
   },
   borde:{
     alignSelf:"center",
@@ -115,19 +115,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginLeft:20,
   },
-  tag: {
-    backgroundColor: colors.grisOscuro,
-    padding:5,
-    width:50,
-    alignSelf: "flex-start",
-    marginLeft:20,
-    marginBottom: 15,
-  },
-  tagText: {
-    color: "#fff",
-    fontSize: 10,
-    alignSelf:"center"
-  },
   description: {
     color: "#fff",
     fontSize: 14,
@@ -148,12 +135,5 @@ const styles = StyleSheet.create({
     gap: 10,
     flexWrap: "wrap",
     marginLeft:20,
-  },
-  genre: {
-    backgroundColor: colors.grisOscuro,
-    color: "#fff",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    fontSize: 10,
   },
 });

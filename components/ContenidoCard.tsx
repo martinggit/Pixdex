@@ -2,6 +2,7 @@ import colors from "@/src/constants/colors";
 import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Etiqueta } from "./Etiqueta";
 
 type TContenidoCardProps = {
   id: number;
@@ -38,11 +39,11 @@ export function ContenidoCard({ nombre, generos, imageUrl }: TContenidoCardProps
           {nombre}
         </Text>
         <View style={styles.genreContainer}>
-          {generosNombre.map((genero, index) => (
-            <View key={index} style={styles.genreTag}>
-              <Text style={styles.genreText}>{genero}</Text>
-            </View>
-          ))}
+          {generosNombre
+            .filter((genero): genero is string => typeof genero === "string")
+            .map((genero, index) => (
+              <Etiqueta key={index} texto={genero} />
+            ))}
         </View>
       </View>
     </View>
@@ -73,17 +74,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 4,
-  },
-  genreTag: {
-    backgroundColor: colors.grisOscuro,
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    marginRight: 4,
-    marginBottom: 2,
-  },
-  genreText: {
-    color: "white",
-    fontSize: 8,
   },
   imagePlaceholder: {
     flex:3,
