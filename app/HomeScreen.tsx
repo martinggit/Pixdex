@@ -39,6 +39,13 @@ export function HomeScreen() {
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
           <Text style={styles.logoText}> Pixdex </Text>
+           {/*<BotonPix
+            text="INICIAR SESION"
+            iconName="user"
+            onPress={() => setModalVisible}
+            iconFamily="Feather"
+          />
+          */}
           <BotonPix
             text="FILTRAR"
             iconName="settings"
@@ -93,6 +100,7 @@ screenContainer: { flex: 1},
     fontSize: 24,
     color: colors.purpura,
     fontFamily: "PixelFont",
+    alignSelf: "flex-start",
   },
   gamesRow: {
     flexDirection: "row",

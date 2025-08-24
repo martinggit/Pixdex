@@ -42,7 +42,7 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
         <View style={styles.container}>
           <Text style={styles.title}>Filtrar Contenido</Text>
           <Pressable onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeText}>X</Text>
+                <Text style={styles.closeText}>x</Text>
           </Pressable>
           <ScrollView>
             <Text style={styles.sectionTitle}>Tipo</Text>
@@ -118,7 +118,16 @@ const styles = StyleSheet.create({
   closeText: {
     color: "white",
     fontSize: 16,
+    alignItems:"center",
     fontWeight: "bold",
+    fontFamily: "PixelFont",
+    backgroundColor:colors.purpura,
+    padding:5,
+    borderWidth: 2,
+    borderTopColor: colors.purpuraClaro,
+    borderBottomColor: colors.purpuraOscuro,
+    borderLeftColor: colors.purpuraClaro,
+    borderRightColor: colors.purpuraOscuro,
     },
   container: {
     backgroundColor: colors.fondo,

@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import ModalLetras from "@/components/ModalLetras";
 
 export default function ContenidoSlugRoute() {
   const { contenidos } = useContext(AudiovisualesContext);
@@ -20,6 +21,40 @@ export default function ContenidoSlugRoute() {
   const [contenidoActual, setContenidoActual] = useState<IContenidoAudiovisual | null>(null);
   const [contenidoRestante, setContenidoRestante] = useState<IContenidoAudiovisual[]>([]);
   const [estado, setEstado] = useState<"jugando" | "perdio">("jugando");
+  const [modalLetraVisible, setModalLetraVisible] = useState(false);
+  const [letrasAdivinadas, setLetrasAdivinadas] = useState<string[]>([]);
+  
+  const manejarLetra = (letra: string) => {
+    if (!contenidoActual) return;
+
+    setLetrasAdivinadas((prev) => [...prev, letra]); // marcar como usada
+    setModalLetraVisible(false);
+
+    const titulo = contenidoActual.nombre.toLowerCase();
+
+    if (titulo.includes(letra)) {
+      // correcta → chequeamos si completó todo
+      const todasCompletas = titulo
+        .split("")
+        .every((char) => char === " " || letrasAdivinadas.includes(char) || char === letra);
+
+      if (todasCompletas) {
+        setPuntos((p) => p + 1);
+        elegirContenidoAleatorio();
+        setLetrasAdivinadas([]); // reset letras
+      }
+    } else {
+      // incorrecta → perder vida
+      setVidas((v) => {
+        const nuevasVidas = v - 1;
+        if (nuevasVidas <= 0) {
+          setEstado("perdio");
+          setModalFinVisible(true);
+        }
+        return nuevasVidas;
+      });
+    }
+  };
 
   const handleBack = () => {
       router.replace("/"); 
@@ -91,10 +126,17 @@ export default function ContenidoSlugRoute() {
                 <>
                 <View style={styles.botonesContainer}>
                   <BotonPix text="ADIVINAR TITULO" onPress={() => setModalVisible(true)} />
-                  <BotonPix text="ADIVINAR LETRA" onPress={() => {}} />
+                  <BotonPix text="ADIVINAR LETRA" onPress={() => setModalLetraVisible(true)} />
                 </View>
                 </>
               )}
+
+              <ModalLetras
+                visible={modalLetraVisible}
+                onClose={() => setModalLetraVisible(false)}
+                onElegirLetra={manejarLetra}
+                letrasUsadas={letrasAdivinadas}
+              />
 
               {/* Imagen y letras SIEMPRE visibles */}
               <View style={styles.imagePlaceholder}>
@@ -105,10 +147,17 @@ export default function ContenidoSlugRoute() {
                 <Text style={styles.letrasTexto}>
                   {contenidoActual.nombre
                     .split("")
-                    .map((char) => (char === " " ? "  " : "_"))
+                    .map((char) =>
+                      char === " "
+                        ? "  "
+                        : letrasAdivinadas.includes(char.toLowerCase())
+                        ? char
+                        : "_"
+                    )
                     .join(" ")}
                 </Text>
               </View>
+
             </>
           )}
         </View>

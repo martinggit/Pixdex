@@ -4,6 +4,7 @@ export default {
     purpuraOscuro: '#4A3D70',
     purpuraClaro: '#9B87F5',
     verde: '#5FD068',
+    verdeOscuro: '#317c38ff',
     grisOscuro: '#403E43',
     gris: '#8E9196',
     grisClaro: '#F6F6F7',

@@ -8,7 +8,6 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-nati
 export default function ContenidoSlugRoute() {
   const router = useRouter();
   const navigation = useNavigation();
-
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleBack = () => {
@@ -125,7 +124,10 @@ screenContainer: { flex: 1},
     backgroundColor: colors.purpura,
     padding:10,
     borderWidth: 2,
-    borderColor:colors.verde,
+    borderTopColor: colors.verde,
+    borderBottomColor: colors.verdeOscuro,
+    borderLeftColor: colors.verde,
+    borderRightColor: colors.verdeOscuro,
     marginTop:30,
     },
   buttonText: {
