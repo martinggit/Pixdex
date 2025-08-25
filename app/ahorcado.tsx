@@ -2,13 +2,36 @@ import { BotonPix } from "@/components/BotonPix";
 import ModalGenerico from "@/components/ModalGenerico";
 import colors from "@/src/constants/colors";
 import { useNavigation, useRouter } from "expo-router";
-import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [top10, setTop10] = useState<any[]>([]);
+
+  // Hook para escuchar en tiempo real el top 10
+  useEffect(() => {
+    const q = query(
+      collection(db, "puntajes"),
+      orderBy("puntaje", "desc"),
+      limit(10)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,    
+        ...doc.data()
+      }));
+      setTop10(data);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleBack = () => {
     if (navigation.canGoBack()) {
@@ -46,6 +69,7 @@ export default function ContenidoSlugRoute() {
                 </TouchableOpacity>
 
                 <Text style ={styles.players}>Mejores Jugadores</Text>
+                {/*
                 <View style={styles.top5}>
                   <View style={styles.jugadorFila}>
                     <Text style={styles.nombreJugador}>1. PixelMaster</Text>
@@ -68,10 +92,29 @@ export default function ContenidoSlugRoute() {
                     <Text style={styles.puntaje}>820</Text>
                   </View>
                 </View>
-
+                */}
+                
+                <View style={styles.top5}>
+                  {top10.length === 0 ? (
+                    <Text style={{ color: "white", textAlign: "center" }}>
+                      Cargando...
+                    </Text>
+                  ) : (
+                    top10.map((j, i) => (
+                      <View key={j.id} style={styles.jugadorFila}>
+                        <Text style={styles.nombreJugador}>
+                          {i + 1}. {j.email || j.alias || "Anónimo"}
+                        </Text>
+                        <Text style={styles.puntaje}>{j.puntaje}</Text>
+                      </View>
+                    ))
+                  )}
+                </View>
+                
             </View>
         </View>
     </View>
+
     {/* Modal genérico */}
       <ModalGenerico
         visible={modalVisible}

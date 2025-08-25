@@ -1,5 +1,27 @@
 import colors from "@/src/constants/colors";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "@/firebaseConfig";
+
+export async function guardarPuntaje(puntos: number) {
+  const user = auth.currentUser;
+  if (!user) {
+    console.log("No hay usuario logueado, no se guardará el puntaje");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "puntajes"), {
+      uid: user.uid,
+      email: user.email,
+      puntaje: puntos,
+      fecha: serverTimestamp(),
+    });
+    console.log(" Puntaje guardado en Firestore");
+  } catch (error) {
+    console.error(" Error al guardar puntaje:", error);
+  }
+}
 
 type Props = {
   visible: boolean;
@@ -16,6 +38,11 @@ export default function ModalFinJuego({
   titulo = "¡Juego Terminado!",
   textoBoton = "SALIR",
 }: Props) {
+  const handlePress = async () => {
+    await guardarPuntaje(puntos); // Guardo Puntaje
+    onConfirm(); 
+  };
+
   return (
     <Modal animationType="fade" transparent visible={visible}>
       <View style={styles.overlay}>
@@ -23,7 +50,7 @@ export default function ModalFinJuego({
           <Text style={styles.titulo}>{titulo}</Text>
           <Text style={styles.puntos}>Puntos: {puntos}</Text>
 
-          <TouchableOpacity style={styles.boton} onPress={onConfirm}>
+          <TouchableOpacity style={styles.boton} onPress={handlePress}>
             <Text style={styles.botonTexto}>{textoBoton}</Text>
           </TouchableOpacity>
         </View>
