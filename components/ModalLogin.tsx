@@ -20,6 +20,7 @@ export default function ModalLogin({ visible, onClose, onSuccess, onRegister }: 
     try {
       await login(email, password);
       onSuccess();
+      onClose();
       setEmail("");
       setPassword("");
     } catch (err: any) {

@@ -4,9 +4,10 @@ import colors from "@/src/constants/colors";
 import { useNavigation, useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
-import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-
+import { obtenerAliasExistente } from "@/src/services/firestoreHelpers";
+import { guardarAlias } from "@/src/services/firestoreHelpers";
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
@@ -41,10 +42,21 @@ export default function ContenidoSlugRoute() {
     }
   };
 
- const iniciarJuego = (nombre: string) => {
+ const iniciarJuego = async (nombre: string) => {
+    await guardarAlias(nombre); // Guarda alias si no existe
     setModalVisible(false);
     router.push({ pathname: "../juegos/juegoAhorcado", params: { nombre } });
   };
+
+  const handleIniciarJuegoPress = async () => {
+    const aliasExistente = await obtenerAliasExistente();
+    if (!aliasExistente) {
+      setModalVisible(true);
+    } else {
+      router.push({ pathname: "../juegos/juegoAhorcado", params: { nombre: aliasExistente } });
+    }
+  };
+
 
   return (
 <ScrollView style={[styles.screenContainer]}>
@@ -64,7 +76,7 @@ export default function ContenidoSlugRoute() {
                 Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
                 </Text>
 
-                <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}> 
+                <TouchableOpacity style={styles.button} onPress={handleIniciarJuegoPress}> 
                     <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
                 </TouchableOpacity>
 
@@ -103,7 +115,7 @@ export default function ContenidoSlugRoute() {
                     top10.map((j, i) => (
                       <View key={j.id} style={styles.jugadorFila}>
                         <Text style={styles.nombreJugador}>
-                          {i + 1}. {j.email || j.alias || "Anónimo"}
+                          {i + 1}. {j.alias?.trim() ? j.alias : "Anónimo"}
                         </Text>
                         <Text style={styles.puntaje}>{j.puntaje}</Text>
                       </View>
