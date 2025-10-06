@@ -13,6 +13,20 @@ export default function ContenidoSlugRoute() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [top10, setTop10] = useState<any[]>([]);
+  const [loadingDots, setLoadingDots] = useState<string[]>(Array(10).fill(""));
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setLoadingDots(prev =>
+      prev.map(dot => {
+        // va agregando un punto hasta 3, luego reinicia
+        const next = dot.length < 3 ? dot + "." : "";
+        return next;
+      })
+    );
+  }, 500); // cada medio segundo
+  return () => clearInterval(interval);
+}, []);
 
   // Hook para escuchar en tiempo real el top 10
   useEffect(() => {
@@ -79,47 +93,22 @@ export default function ContenidoSlugRoute() {
                     <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
                 </TouchableOpacity>
 
-                <Text style ={styles.players}>Mejores Jugadores</Text>
-                {/*
-                <View style={styles.top5}>
-                  <View style={styles.jugadorFila}>
-                    <Text style={styles.nombreJugador}>1. PixelMaster</Text>
-                    <Text style={styles.puntaje}>950</Text>
-                  </View>
-                  <View style={styles.jugadorFila}>
-                    <Text style={styles.nombreJugador}>2. NinjaGamer</Text>
-                    <Text style={styles.puntaje}>900</Text>
-                  </View>
-                  <View style={styles.jugadorFila}>
-                    <Text style={styles.nombreJugador}>3. MediaGuru</Text>
-                    <Text style={styles.puntaje}>870</Text>
-                  </View>
-                  <View style={styles.jugadorFila}>
-                    <Text style={styles.nombreJugador}>4. TVFanatic</Text>
-                    <Text style={styles.puntaje}>850</Text>
-                  </View>
-                  <View style={styles.jugadorFila}>
-                    <Text style={styles.nombreJugador}>5. AnimeWizard</Text>
-                    <Text style={styles.puntaje}>820</Text>
-                  </View>
-                </View>
-                */}
+                <Text style ={styles.players}>Top 10 Mejores Jugadores</Text>
                 
-                <View style={styles.top5}>
-                  {top10.length === 0 ? (
-                    <Text style={{ color: "white", textAlign: "center" }}>
-                      Cargando...
-                    </Text>
-                  ) : (
-                    top10.map((j, i) => (
-                      <View key={j.id} style={styles.jugadorFila}>
+                <View style={styles.top10}>
+                  {Array.from({ length: 10 }).map((_, i) => {
+                    const jugador = top10[i];
+                    return (
+                      <View key={jugador?.id || i} style={styles.jugadorFila}>
                         <Text style={styles.nombreJugador}>
-                          {i + 1}. {j.alias?.trim() ? j.alias : "Anónimo"}
+                          {i + 1}. {jugador ? (jugador.alias?.trim() ? jugador.alias : "Anónimo") : `Cargando${loadingDots[i]}`}
                         </Text>
-                        <Text style={styles.puntaje}>{j.puntaje}</Text>
+                        <Text style={styles.puntaje}>
+                          {jugador ? jugador.puntaje : "-"}
+                        </Text>
                       </View>
-                    ))
-                  )}
+                    );
+                  })}
                 </View>
                 
             </View>
@@ -197,7 +186,7 @@ screenContainer: { flex: 1},
     marginTop:30,
     marginHorizontal:20,
     },
-  top5:{
+  top10:{
     backgroundColor:colors.grisOscuro,
     height:400,
     width:250,
@@ -214,6 +203,9 @@ screenContainer: { flex: 1},
   nombreJugador: {
     color: "white",
     fontSize: 16,
+  },
+  jugadorFilaVacio: {
+    opacity: 0.5,
   },
   puntaje: {
     color: colors.verde,

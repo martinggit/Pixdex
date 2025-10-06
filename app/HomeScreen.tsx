@@ -3,15 +3,15 @@ import { CajaContenido } from "@/components/CajaContenido";
 import { CajaJuegos } from "@/components/CajaJuegos";
 import { ContenidoList } from "@/components/ContenidoList";
 import { ModalFiltros } from "@/components/ModalFiltros";
+import ModalLogin from "@/components/ModalLogin";
+import ModalRegister from "@/components/ModalRegister";
 import colors from "@/src/constants/colors";
 import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import { useRouter } from "expo-router";
-import { useContext, useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
+import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ROUTES } from "../src/navigation/routes";
-import ModalLogin from "@/components/ModalLogin";
-import ModalRegister from "@/components/ModalRegister";
-import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
 
 export function HomeScreen() {
   const { tipos, generos } = useContext(AudiovisualesContext); //tomo del contexto
@@ -50,14 +50,11 @@ export function HomeScreen() {
 
   return (
     <ScrollView style={[styles.screenContainer]}>
-       <ModalFiltros
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onApply={handleApplyFilters}
-      />
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
           <Text style={styles.logoText}> Pixdex </Text>
+           
+          <View style={styles.botonesContainerVertical}>
            {user ? (
             <BotonPix
               text="SALIR"
@@ -80,6 +77,7 @@ export function HomeScreen() {
             onPress={() => setModalVisible(true)}
             iconFamily="Feather"
           />
+        </View>
         </View>
       </View>
 
@@ -129,6 +127,11 @@ export function HomeScreen() {
       }}
       />
 
+      <ModalFiltros
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onApply={handleApplyFilters}
+      />
     </ScrollView>
   );
 }
@@ -147,13 +150,19 @@ screenContainer: { flex: 1},
     fontSize: 24,
     color: colors.purpura,
     fontFamily: "PixelFont",
-    alignSelf: "flex-start",
+    alignSelf: "center",
   },
   gamesRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 10,
     marginHorizontal:10,
+  },
+  botonesContainerVertical: {
+    flexDirection: "column", 
+    gap: 8,
+    alignItems: "flex-end", 
+    maxWidth:80,
   },
   gameBox: {
     flex: 1,
