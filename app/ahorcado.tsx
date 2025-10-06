@@ -1,13 +1,12 @@
 import { BotonPix } from "@/components/BotonPix";
 import ModalGenerico from "@/components/ModalGenerico";
-import colors from "@/src/constants/colors";
-import { useNavigation, useRouter } from "expo-router";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useEffect, useState } from "react";
-import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-import { obtenerAliasExistente } from "@/src/services/firestoreHelpers";
-import { guardarAlias } from "@/src/services/firestoreHelpers";
+import colors from "@/src/constants/colors";
+import { guardarAlias, obtenerAliasExistente } from "@/src/services/firestoreHelpers";
+import { useNavigation, useRouter } from "expo-router";
+import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
@@ -200,7 +199,7 @@ screenContainer: { flex: 1},
     },
   top5:{
     backgroundColor:colors.grisOscuro,
-    height:200,
+    height:400,
     width:250,
     gap:15,
     padding:15,

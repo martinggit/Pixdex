@@ -1,14 +1,15 @@
 import { BotonPix } from "@/components/BotonPix";
 import ModalFinJuego from "@/components/ModalFinJuego";
 import ModalGenerico from "@/components/ModalGenerico";
+import ModalLetras from "@/components/ModalLetras";
 import colors from "@/src/constants/colors";
 import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import { IContenidoAudiovisual } from "@/src/data/contenidosAudiovisuales";
+import { guardarPuntaje } from "@/src/services/firestoreHelpers";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import ModalLetras from "@/components/ModalLetras";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function ContenidoSlugRoute() {
   const { contenidos } = useContext(AudiovisualesContext);
@@ -23,6 +24,7 @@ export default function ContenidoSlugRoute() {
   const [estado, setEstado] = useState<"jugando" | "perdio">("jugando");
   const [modalLetraVisible, setModalLetraVisible] = useState(false);
   const [letrasAdivinadas, setLetrasAdivinadas] = useState<string[]>([]);
+  const [puntajeGuardado, setPuntajeGuardado] = useState(false); 
   
   const manejarLetra = (letra: string) => {
     if (!contenidoActual) return;
@@ -48,17 +50,37 @@ export default function ContenidoSlugRoute() {
       setVidas((v) => {
         const nuevasVidas = v - 1;
         if (nuevasVidas <= 0) {
-          setEstado("perdio");
-          setModalFinVisible(true);
+          terminarJuego();
         }
         return nuevasVidas;
       });
     }
   };
 
-  const handleBack = () => {
-      router.replace("/"); 
+  const terminarJuego = async () => {
+    setEstado("perdio");
+    
+    // Guardar puntaje en Firestore
+    if (!puntajeGuardado) {
+      setPuntajeGuardado(true);
+      try {
+        await guardarPuntaje(puntos);
+        console.log("Puntaje guardado exitosamente");
+      } catch (error) {
+        console.error("Error al guardar puntaje:", error);
+        Alert.alert(
+          "Error", 
+          "No se pudo guardar tu puntaje. Verifica tu conexión a internet."
+        );
+      }
     }
+    
+    setModalFinVisible(true);
+  };
+
+  const handleBack = () => {
+    router.replace("/"); 
+  };
 
   const elegirContenidoAleatorio = () => {
     const restantes = contenidoRestante.length > 0 ? contenidoRestante : [...contenidos];
@@ -67,7 +89,7 @@ export default function ContenidoSlugRoute() {
     const nuevosRestantes = restantes.filter((c) => c !== nuevoContenido);
     setContenidoActual(nuevoContenido);
     setContenidoRestante(nuevosRestantes);
-    };
+  };
 
   const manejarAdivinanza = (valor: string) => {
     if (!contenidoActual) return;
@@ -80,25 +102,24 @@ export default function ContenidoSlugRoute() {
     if (guessNormalizado === tituloNormalizado) {
       setPuntos((p) => p + 1);
       elegirContenidoAleatorio();
+      setLetrasAdivinadas([]); // reset letras también aquí
     } else {
       setVidas((v) => {
         const nuevasVidas = v - 1;
         if (nuevasVidas <= 0) {
-          setEstado("perdio");
-          setModalFinVisible(true);
+          terminarJuego();
         }
         return nuevasVidas;
       });
     }
   };
 
-
   useEffect(() => {
-  elegirContenidoAleatorio();
-}, []);
+    elegirContenidoAleatorio();
+  }, []);
 
   return (
-<ScrollView contentContainerStyle={styles.scrollContainer}>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         {/* HEADER */}
         <View style={styles.header}>
@@ -114,8 +135,12 @@ export default function ContenidoSlugRoute() {
             ))}
           </View>
           <View style={styles.jugador}>
-            <Text style={{ fontSize: 12, color: colors.blanco}}> Jugador: {nombre}</Text>
-            <Text style={{ fontSize: 12, color: colors.blanco}}> Puntos: {puntos} </Text>
+            <Text style={{ fontSize: 12, color: colors.blanco }}>
+              Jugador: {nombre}
+            </Text>
+            <Text style={{ fontSize: 12, color: colors.blanco }}>
+              Puntos: {puntos}
+            </Text>
           </View>
         </View>
 
@@ -124,10 +149,16 @@ export default function ContenidoSlugRoute() {
             <>
               {estado === "jugando" && (
                 <>
-                <View style={styles.botonesContainer}>
-                  <BotonPix text="ADIVINAR TITULO" onPress={() => setModalVisible(true)} />
-                  <BotonPix text="ADIVINAR LETRA" onPress={() => setModalLetraVisible(true)} />
-                </View>
+                  <View style={styles.botonesContainer}>
+                    <BotonPix
+                      text="ADIVINAR TITULO"
+                      onPress={() => setModalVisible(true)}
+                    />
+                    <BotonPix
+                      text="ADIVINAR LETRA"
+                      onPress={() => setModalLetraVisible(true)}
+                    />
+                  </View>
                 </>
               )}
 
@@ -140,7 +171,9 @@ export default function ContenidoSlugRoute() {
 
               {/* Imagen y letras SIEMPRE visibles */}
               <View style={styles.imagePlaceholder}>
-                <Text style={{ color: "black", textAlign: "center" }}>{contenidoActual.nombre}</Text>
+                <Text style={{ color: "black", textAlign: "center" }}>
+                  {contenidoActual.nombre}
+                </Text>
               </View>
 
               <View style={styles.panelLetras}>
@@ -157,7 +190,6 @@ export default function ContenidoSlugRoute() {
                     .join(" ")}
                 </Text>
               </View>
-
             </>
           )}
         </View>
@@ -181,13 +213,12 @@ export default function ContenidoSlugRoute() {
   );
 }
 
-
 const styles = StyleSheet.create({
-scrollContainer: {
-  backgroundColor: colors.fondo,
-  flexGrow: 1,
+  scrollContainer: {
+    backgroundColor: colors.fondo,
+    flexGrow: 1,
   },
-container: {
+  container: {
     flex: 1,
     padding: 20,
     backgroundColor: colors.fondo,
@@ -210,7 +241,7 @@ container: {
     marginTop: 30,
     alignItems: "center",
     padding: 10,
-    paddingBottom:30,
+    paddingBottom: 30,
   },
   button: {
     flexDirection: "row",
@@ -230,7 +261,7 @@ container: {
     fontSize: 14,
   },
   panelLetras: {
-    backgroundColor: colors.grisOscuro, 
+    backgroundColor: colors.grisOscuro,
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -243,23 +274,23 @@ container: {
     color: colors.blanco,
   },
   imagePlaceholder: {
-    height:400,
+    height: 400,
     width: "95%",
-    marginTop:20,
+    marginTop: 20,
     backgroundColor: "#BEBEBE",
     marginBottom: 20,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf:"center",
+    alignSelf: "center",
   },
   botonesContainer: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     marginBottom: 10,
-    marginTop:10,
-    gap:10,
+    marginTop: 10,
+    gap: 10,
   },
   jugador: {
-    flexDirection:"column",
+    flexDirection: "column",
   },
 });
