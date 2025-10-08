@@ -13,7 +13,7 @@ import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ROUTES } from "../src/navigation/routes";
 
-export function HomeScreen() {
+export default function HomeScreen() {
   const { tipos, generos } = useContext(AudiovisualesContext); //tomo del contexto
   const [modalVisible, setModalVisible] = useState(false);
   const [tiposSeleccionados, setTiposSeleccionados] = useState<number[]>([1, 2, 3]);
@@ -57,14 +57,14 @@ export function HomeScreen() {
           <View style={styles.botonesContainerVertical}>
            {user ? (
             <BotonPix
-              text="SALIR"
+              text="CERRAR SESIÓN"
               iconName="log-out"
               onPress={handleLogout}
               iconFamily="Feather"
             />
           ) : (
             <BotonPix
-              text="INICIAR SESION"
+              text="INICIAR SESIÓN"
               iconName="user"
               onPress={() => setLoginVisible(true)}
               iconFamily="Feather"
