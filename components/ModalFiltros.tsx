@@ -4,7 +4,7 @@ import { generosContenidoAudiovisual } from "@/src/data/generosContenidoAudiovis
 import { tiposContenidoAudiovisual } from "@/src/data/tiposContenidoAudiovisual";
 import Checkbox from 'expo-checkbox';
 import { useState } from "react";
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View, } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
 
 interface Props {
   visible: boolean;
@@ -41,9 +41,9 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Filtrar Contenido</Text>
-          <Pressable onPress={onClose} style={styles.closeButton}>
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <Text style={styles.closeText}>x</Text>
-          </Pressable>
+          </TouchableOpacity>
           <ScrollView>
             <Text style={styles.sectionTitle}>Tipo</Text>
             {tiposContenidoAudiovisual.map((tipo) => (

@@ -35,6 +35,10 @@ export default function HomeScreen() {
     router.push(ROUTES.AHORCADO);
   };
 
+  const goToPixelReveal = () => {
+    router.push(ROUTES.PIXEL_REVEAL);
+  };
+
   const handleApplyFilters = (tipos: number[], generos: number[]) => {
     setTiposSeleccionados(tipos);
     setGenerosSeleccionados(generos);
@@ -98,6 +102,7 @@ export default function HomeScreen() {
               backgroundColor={colors.verde}
               text="Pixel Reveal"
               descripcion="Identifica títulos desde imágenes pixeladas. ¡Pon a prueba tu memoria visual!"
+              onPress={goToPixelReveal}
             ></CajaJuegos>
           </View>
         </View>
