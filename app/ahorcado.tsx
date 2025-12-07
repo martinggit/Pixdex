@@ -101,7 +101,7 @@ export default function ContenidoSlugRoute() {
                     return (
                       <View key={jugador?.id || i} style={styles.jugadorFila}>
                         <Text style={styles.nombreJugador}>
-                          {i + 1}. {jugador ? (jugador.alias?.trim() ? jugador.alias : "Anónimo") : `Cargando${loadingDots[i]}`}
+                          {i + 1}. {jugador ? (jugador.alias?.trim() ? jugador.alias : "Anónimo") : `Sin datos${loadingDots[i]}`}
                         </Text>
                         <Text style={styles.puntaje}>
                           {jugador ? jugador.puntaje : "-"}

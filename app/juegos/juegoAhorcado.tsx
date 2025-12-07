@@ -26,13 +26,24 @@ export default function ContenidoSlugRoute() {
   const [letrasAdivinadas, setLetrasAdivinadas] = useState<string[]>([]);
   const [puntajeGuardado, setPuntajeGuardado] = useState(false); 
   
+  const limpiarTitulo = (titulo: string): string => {
+  return titulo
+    .toLowerCase()
+    // Borra todo lo que NO sea letras (a-z, ñ, acentos) ni espacios (\s)
+    .replace(/[^a-záéíóúüñ\s]/g, "") 
+    // Opcional: Si quedaran dobles espacios por borrar algo del medio, esto deja uno solo
+    .replace(/\s+/g, " ") 
+    .trim(); 
+};
+
   const manejarLetra = (letra: string) => {
     if (!contenidoActual) return;
 
     setLetrasAdivinadas((prev) => [...prev, letra]); // marcar como usada
     setModalLetraVisible(false);
 
-    const titulo = contenidoActual.nombre.toLowerCase();
+    // Título limpio
+    const titulo = limpiarTitulo(contenidoActual.nombre);
 
     if (titulo.includes(letra)) {
       // correcta → chequeamos si completó todo
@@ -178,14 +189,15 @@ export default function ContenidoSlugRoute() {
 
               <View style={styles.panelLetras}>
                 <Text style={styles.letrasTexto}>
-                  {contenidoActual.nombre
+                  {contenidoActual && 
+                    limpiarTitulo(contenidoActual.nombre)
                     .split("")
-                    .map((char) =>
+                    .map((char, index) =>
                       char === " "
-                        ? "  "
-                        : letrasAdivinadas.includes(char.toLowerCase())
-                        ? char
-                        : "_"
+                        ? "  " // Espacio visual
+                        : letrasAdivinadas.includes(char)
+                        ? char // Muestra la letra si ya la adivinó
+                        : "_"  // Muestra guion si no
                     )
                     .join(" ")}
                 </Text>
