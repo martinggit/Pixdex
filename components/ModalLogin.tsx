@@ -48,7 +48,7 @@ export default function ModalLogin({ visible, onClose, onSuccess, onRegister }: 
 
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Contraseña"
             placeholderTextColor="#aaa"
             secureTextEntry
             value={password}
@@ -62,9 +62,13 @@ export default function ModalLogin({ visible, onClose, onSuccess, onRegister }: 
           </TouchableOpacity>
 
           {/* Botón para registrarse */}
-          <TouchableOpacity onPress={onRegister} style={{ marginTop: 15 }}>
-            <Text style={{ color: colors.verde, fontFamily: "PixelFont" }}>
-              ¿No tenés usuario? Registrate
+          <Text style={{ color: colors.blanco, fontFamily: "PixelFont", marginTop:20 }}>
+              ¿No tenés usuario?
+          </Text>
+
+          <TouchableOpacity onPress={onRegister} style={{ marginTop: 5 }}>
+            <Text style={{ color: colors.verde, fontFamily: "PixelFont", textDecorationLine: 'underline', }}>
+              Registrarme
             </Text>
           </TouchableOpacity>
 
