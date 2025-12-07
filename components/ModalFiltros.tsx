@@ -41,8 +41,8 @@ export function ModalFiltros({ visible, onClose, onApply }: Props) {
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Filtrar Contenido</Text>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeText}>x</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeText}>✕</Text>
           </TouchableOpacity>
           <ScrollView>
             <Text style={styles.sectionTitle}>Tipo</Text>
@@ -112,22 +112,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+    zIndex: 1,
     padding: 5,
-    zIndex: 10,
-    },
+  },
   closeText: {
-    color: "white",
-    fontSize: 16,
-    alignItems:"center",
+    color: colors.gris,
+    fontSize: 18,
     fontWeight: "bold",
-    fontFamily: "PixelFont",
-    backgroundColor:colors.purpura,
-    padding:5,
-    borderWidth: 2,
-    borderTopColor: colors.purpuraClaro,
-    borderBottomColor: colors.purpuraOscuro,
-    borderLeftColor: colors.purpuraClaro,
-    borderRightColor: colors.purpuraOscuro,
     },
   container: {
     backgroundColor: colors.fondo,

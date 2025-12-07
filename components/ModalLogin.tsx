@@ -62,7 +62,7 @@ export default function ModalLogin({ visible, onClose, onSuccess, onRegister }: 
           </TouchableOpacity>
 
           {/* Botón para registrarse */}
-          <Text style={{ color: colors.blanco, fontFamily: "PixelFont", marginTop:20 }}>
+          <Text style={{ color: colors.blanco, fontFamily: "PixelFont", marginTop:20, alignItems:"center" }}>
               ¿No tenés usuario?
           </Text>
 

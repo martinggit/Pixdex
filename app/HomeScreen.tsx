@@ -12,6 +12,7 @@ import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ROUTES } from "../src/navigation/routes";
+import { SafeAreaView} from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const { tipos, generos } = useContext(AudiovisualesContext); //tomo del contexto
@@ -53,6 +54,7 @@ export default function HomeScreen() {
   const tiposMostrar = tiposSeleccionados.length > 0 ? tipos.filter(t => tiposSeleccionados.includes(t.id)) : tipos;
 
   return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
     <ScrollView style={[styles.screenContainer]}>
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
@@ -138,6 +140,7 @@ export default function HomeScreen() {
         onApply={handleApplyFilters}
       />
     </ScrollView>
+  </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
@@ -167,7 +170,7 @@ screenContainer: { flex: 1},
     flexDirection: "column", 
     gap: 8,
     alignItems: "flex-end", 
-    maxWidth:80,
+    maxWidth:110,
   },
   gameBox: {
     flex: 1,

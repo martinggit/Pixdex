@@ -1,7 +1,8 @@
+import { Platform } from "react-native";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeAuth, getAuth, browserLocalPersistence, inMemoryPersistence, Auth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 // Configuración de Firebase usando variables de entorno
 const firebaseConfig = {
@@ -14,30 +15,30 @@ const firebaseConfig = {
   measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-
-// Validación de variables de entorno
 if (!firebaseConfig.apiKey) {
-  console.error('⚠️ ADVERTENCIA: Variables de entorno de Firebase no encontradas.');
-  console.error('Asegúrate de tener un archivo .env con las credenciales correctas.');
+  console.error('⚠️ Variables de entorno no encontradas.');
 }
 
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+// -----------------------------------------------------------------
+//  Inicialización condicional según la plataforma
+// -----------------------------------------------------------------
+let auth: Auth;
 
-// Initialize Auth
-// getAuth() maneja automáticamente la persistencia en todas las plataformas:
-// - Web: usa localStorage
-// - React Native: usa memoria (pero Firebase maneja la persistencia internamente)
-export const auth = getAuth(app);
+if (Platform.OS === 'web') {
+  // CASO WEB: Usamos la persistencia estándar del navegador
+  auth = getAuth(app);
+} else {
+  // CASO CELULAR (Android/iOS): Usamos AsyncStorage
+  // @ts-ignore 
+  const { getReactNativePersistence } = require('firebase/auth');
 
+  auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+  });
+}
 
-// Initialize Firestore
+export { auth };
 export const db = getFirestore(app);
-
-
 export { app };
-
-
-
