@@ -55,7 +55,7 @@ Incluye autenticación, listas filtradas, navegación completa y persistencia de
 
 ### 1️⃣ Clonar el repositorio
 ```bash
-git clone https://github.com/martinggit/AsignacionDeMemoria-SO.git
+git clone https://github.com/martinggit/Pixdex.git
 ```
 
 ### 2️⃣ Instalar dependencias
