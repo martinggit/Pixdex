@@ -55,91 +55,91 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
-    <ScrollView style={[styles.screenContainer]}>
-      <View style={styles.mainContent}>
-        <View style={styles.headerRow}>
-          <Text style={styles.logoText}> Pixdex </Text>
-           
-          <View style={styles.botonesContainerVertical}>
-           {user ? (
+      <ScrollView style={[styles.screenContainer]}>
+        <View style={styles.mainContent}>
+          <View style={styles.headerRow}>
+            <Text style={styles.logoText}> Pixdex </Text>
+            
+            <View style={styles.botonesContainerVertical}>
+            {user ? (
+              <BotonPix
+                text="CERRAR SESIÓN"
+                iconName="log-out"
+                onPress={handleLogout}
+                iconFamily="Feather"
+              />
+            ) : (
+              <BotonPix
+                text="INICIAR SESIÓN"
+                iconName="user"
+                onPress={() => setLoginVisible(true)}
+                iconFamily="Feather"
+              />
+            )}
+            
             <BotonPix
-              text="CERRAR SESIÓN"
-              iconName="log-out"
-              onPress={handleLogout}
+              text="FILTRAR"
+              iconName="settings"
+              onPress={() => setModalVisible(true)}
               iconFamily="Feather"
             />
-          ) : (
-            <BotonPix
-              text="INICIAR SESIÓN"
-              iconName="user"
-              onPress={() => setLoginVisible(true)}
-              iconFamily="Feather"
-            />
-          )}
-          
-          <BotonPix
-            text="FILTRAR"
-            iconName="settings"
-            onPress={() => setModalVisible(true)}
-            iconFamily="Feather"
-          />
-        </View>
-        </View>
-      </View>
-
-       <View style={styles.gamesRow}>
-          {/* Tarjeta 1 */}
-          <View style={styles.gameBox}>
-            <CajaJuegos
-              backgroundColor={colors.purpura}
-              text="Desafío del Ahorcado"
-              descripcion="Adivina los títulos letra por letra. ¿Cuántos puedes identificar?"
-              onPress={goToAhorcado}
-            ></CajaJuegos>
           </View>
-
-          {/* Tarjeta 2 */}
-          <View style={styles.gameBox}>
-            <CajaJuegos
-              backgroundColor={colors.verde}
-              text="Pixel Reveal"
-              descripcion="Identifica títulos desde imágenes pixeladas. ¡Pon a prueba tu memoria visual!"
-              onPress={goToPixelReveal}
-            ></CajaJuegos>
           </View>
         </View>
 
-        {tiposMostrar.map((tipo) => (
-        <CajaContenido key={tipo.id} text={tipo.plural}>
-          <ContenidoList tipoId={tipo.id} generosFiltrados={generosSeleccionados} />
-        </CajaContenido>
-      ))}
+        <View style={styles.gamesRow}>
+            {/* Tarjeta 1 */}
+            <View style={styles.gameBox}>
+              <CajaJuegos
+                backgroundColor={colors.purpura}
+                text="Desafío del Ahorcado"
+                descripcion="Adivina los títulos letra por letra. ¿Cuántos puedes identificar?"
+                onPress={goToAhorcado}
+              ></CajaJuegos>
+            </View>
 
-      <ModalLogin
-        visible={loginVisible}
-        onClose={() => setLoginVisible(false)}
-        onSuccess={() => console.log("Login exitoso!")}
-        onRegister={() => {
-        setLoginVisible(false);   // cerrar login
-        setRegisterVisible(true); // abrir registro
-      }}
-      />
+            {/* Tarjeta 2 */}
+            <View style={styles.gameBox}>
+              <CajaJuegos
+                backgroundColor={colors.verde}
+                text="Pixel Reveal"
+                descripcion="Identifica títulos desde imágenes pixeladas. ¡Pon a prueba tu memoria visual!"
+                onPress={goToPixelReveal}
+              ></CajaJuegos>
+            </View>
+          </View>
 
-      <ModalRegister
-        visible={registerVisible}
-        onClose={() => setRegisterVisible(false)}
-        onSuccess={() => {
-        console.log("Registro exitoso!");
-        setRegisterVisible(false);
-      }}
-      />
+          {tiposMostrar.map((tipo) => (
+          <CajaContenido key={tipo.id} text={tipo.plural}>
+            <ContenidoList tipoId={tipo.id} generosFiltrados={generosSeleccionados} />
+          </CajaContenido>
+        ))}
 
-      <ModalFiltros
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onApply={handleApplyFilters}
-      />
-    </ScrollView>
+        <ModalLogin
+          visible={loginVisible}
+          onClose={() => setLoginVisible(false)}
+          onSuccess={() => console.log("Login exitoso!")}
+          onRegister={() => {
+          setLoginVisible(false);   // cerrar login
+          setRegisterVisible(true); // abrir registro
+        }}
+        />
+
+        <ModalRegister
+          visible={registerVisible}
+          onClose={() => setRegisterVisible(false)}
+          onSuccess={() => {
+          console.log("Registro exitoso!");
+          setRegisterVisible(false);
+        }}
+        />
+
+        <ModalFiltros
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onApply={handleApplyFilters}
+        />
+      </ScrollView>
   </SafeAreaView>
   );
 }

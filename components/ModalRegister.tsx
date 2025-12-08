@@ -46,7 +46,7 @@ export default function ModalRegister({ visible, onClose, onSuccess }: Props) {
             <Text style={styles.closeText}>✕</Text>
           </TouchableOpacity>
 
-          <Text style={styles.titulo}>Registrarse</Text>
+          <Text style={styles.titulo}>Registro</Text>
 
           <TextInput
             style={styles.input}
@@ -68,7 +68,7 @@ export default function ModalRegister({ visible, onClose, onSuccess }: Props) {
           {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <TouchableOpacity style={styles.boton} onPress={handleRegister}>
-            <Text style={styles.botonTexto}>REGISTRARSE</Text>
+            <Text style={styles.botonTexto}>REGISTRARME</Text>
           </TouchableOpacity>
         </View>
       </View>

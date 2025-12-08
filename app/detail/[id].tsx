@@ -5,6 +5,7 @@ import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useContext } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Etiqueta } from "@/components/Etiqueta";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContenidoSlugRoute() {
   const { id } = useLocalSearchParams(); // ← Accede a /detail/LOQUESEA
@@ -41,42 +42,44 @@ export default function ContenidoSlugRoute() {
   }
 
   return (
-<ScrollView style={[styles.screenContainer]}
- contentContainerStyle={{ paddingBottom: 40, flexGrow: 1 }}>
-    <View style={styles.container}>
-      <View style={{ alignSelf: "flex-start" }}>
-        <BotonPix
-          text="VOLVER"
-          iconName="arrow-back"
-          onPress={handleBack}
-          iconFamily="Ionicons"
-        />
-      </View>
-        <View style={styles.borde}>
-          <View style={styles.imagePlaceholder}>
-            <Text style={{ color: "black", textAlign: "center" }}>{id}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
+      <ScrollView style={[styles.screenContainer]}
+      contentContainerStyle={{ paddingBottom: 40, flexGrow: 1 }}>
+          <View style={styles.container}>
+            <View style={{ alignSelf: "flex-start" }}>
+              <BotonPix
+                text="VOLVER"
+                iconName="arrow-back"
+                onPress={handleBack}
+                iconFamily="Ionicons"
+              />
+            </View>
+              <View style={styles.borde}>
+                <View style={styles.imagePlaceholder}>
+                  <Text style={{ color: "black", textAlign: "center" }}>{id}</Text>
+                </View>
+              
+                <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
+              
+              <View style={{ marginLeft: 20, marginBottom: 15 }}>
+                {tipoNombre && <Etiqueta texto={tipoNombre} variant="detalle" />}
+              </View>
+
+              <Text style={styles.description}>{contenido?.descripcion}</Text>
+              
+              <Text style={styles.genresTitle}>Generos</Text>
+              <View style={styles.genreList}>
+                {generosNombres
+                  ?.filter((g): g is string => typeof g === "string")
+                  .map((genero, index) => (
+                    <Etiqueta key={index} texto={genero} variant="detalle" />
+                ))}
+              </View>
+
+              </View>
           </View>
-        
-          <Text style={styles.slugTitle}>{contenido?.nombre}</Text>
-        
-        <View style={{ marginLeft: 20, marginBottom: 15 }}>
-          {tipoNombre && <Etiqueta texto={tipoNombre} variant="detalle" />}
-        </View>
-
-        <Text style={styles.description}>{contenido?.descripcion}</Text>
-        
-        <Text style={styles.genresTitle}>Generos</Text>
-        <View style={styles.genreList}>
-          {generosNombres
-            ?.filter((g): g is string => typeof g === "string")
-            .map((genero, index) => (
-              <Etiqueta key={index} texto={genero} variant="detalle" />
-          ))}
-        </View>
-
-        </View>
-    </View>
-</ScrollView>
+      </ScrollView>
+  </SafeAreaView>
   );
 }
 

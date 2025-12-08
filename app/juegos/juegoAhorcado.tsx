@@ -10,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContenidoSlugRoute() {
   const { contenidos } = useContext(AudiovisualesContext);
@@ -130,98 +131,100 @@ export default function ContenidoSlugRoute() {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        {/* HEADER */}
-        <View style={styles.header}>
-          <BotonPix
-            text="SALIR"
-            iconName="arrow-back"
-            onPress={handleBack}
-            iconFamily="Ionicons"
-          />
-          <View style={styles.vidas}>
-            {[...Array(vidas)].map((_, i) => (
-              <Ionicons key={i} name="heart" size={20} color={colors.purpura} />
-            ))}
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          {/* HEADER */}
+          <View style={styles.header}>
+            <BotonPix
+              text="SALIR"
+              iconName="arrow-back"
+              onPress={handleBack}
+              iconFamily="Ionicons"
+            />
+            <View style={styles.vidas}>
+              {[...Array(vidas)].map((_, i) => (
+                <Ionicons key={i} name="heart" size={20} color={colors.purpura} />
+              ))}
+            </View>
+            <View style={styles.jugador}>
+              <Text style={{ fontSize: 12, color: colors.blanco }}>
+                Jugador: {nombre}
+              </Text>
+              <Text style={{ fontSize: 12, color: colors.blanco }}>
+                Puntos: {puntos}
+              </Text>
+            </View>
           </View>
-          <View style={styles.jugador}>
-            <Text style={{ fontSize: 12, color: colors.blanco }}>
-              Jugador: {nombre}
-            </Text>
-            <Text style={{ fontSize: 12, color: colors.blanco }}>
-              Puntos: {puntos}
-            </Text>
+
+          <View style={styles.borde}>
+            {contenidoActual && (
+              <>
+                {estado === "jugando" && (
+                  <>
+                    <View style={styles.botonesContainer}>
+                      <BotonPix
+                        text="ADIVINAR TITULO"
+                        onPress={() => setModalVisible(true)}
+                      />
+                      <BotonPix
+                        text="ADIVINAR LETRA"
+                        onPress={() => setModalLetraVisible(true)}
+                      />
+                    </View>
+                  </>
+                )}
+
+                <ModalLetras
+                  visible={modalLetraVisible}
+                  onClose={() => setModalLetraVisible(false)}
+                  onElegirLetra={manejarLetra}
+                  letrasUsadas={letrasAdivinadas}
+                />
+
+                {/* Imagen y letras SIEMPRE visibles */}
+                <View style={styles.imagePlaceholder}>
+                  <Text style={{ color: "black", textAlign: "center" }}>
+                    {contenidoActual.nombre}
+                  </Text>
+                </View>
+
+                <View style={styles.panelLetras}>
+                  <Text style={styles.letrasTexto}>
+                    {contenidoActual && 
+                      limpiarTitulo(contenidoActual.nombre)
+                      .split("")
+                      .map((char, index) =>
+                        char === " "
+                          ? "  " // Espacio visual
+                          : letrasAdivinadas.includes(char)
+                          ? char // Muestra la letra si ya la adivinó
+                          : "_"  // Muestra guion si no
+                      )
+                      .join(" ")}
+                  </Text>
+                </View>
+              </>
+            )}
           </View>
         </View>
 
-        <View style={styles.borde}>
-          {contenidoActual && (
-            <>
-              {estado === "jugando" && (
-                <>
-                  <View style={styles.botonesContainer}>
-                    <BotonPix
-                      text="ADIVINAR TITULO"
-                      onPress={() => setModalVisible(true)}
-                    />
-                    <BotonPix
-                      text="ADIVINAR LETRA"
-                      onPress={() => setModalLetraVisible(true)}
-                    />
-                  </View>
-                </>
-              )}
+        <ModalFinJuego
+          visible={modalFinVisible}
+          puntos={puntos}
+          onConfirm={handleBack}
+        />
 
-              <ModalLetras
-                visible={modalLetraVisible}
-                onClose={() => setModalLetraVisible(false)}
-                onElegirLetra={manejarLetra}
-                letrasUsadas={letrasAdivinadas}
-              />
-
-              {/* Imagen y letras SIEMPRE visibles */}
-              <View style={styles.imagePlaceholder}>
-                <Text style={{ color: "black", textAlign: "center" }}>
-                  {contenidoActual.nombre}
-                </Text>
-              </View>
-
-              <View style={styles.panelLetras}>
-                <Text style={styles.letrasTexto}>
-                  {contenidoActual && 
-                    limpiarTitulo(contenidoActual.nombre)
-                    .split("")
-                    .map((char, index) =>
-                      char === " "
-                        ? "  " // Espacio visual
-                        : letrasAdivinadas.includes(char)
-                        ? char // Muestra la letra si ya la adivinó
-                        : "_"  // Muestra guion si no
-                    )
-                    .join(" ")}
-                </Text>
-              </View>
-            </>
-          )}
-        </View>
-      </View>
-
-      <ModalFinJuego
-        visible={modalFinVisible}
-        puntos={puntos}
-        onConfirm={handleBack}
-      />
-
-      <ModalGenerico
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onConfirm={manejarAdivinanza}
-        titulo="Adivina el titulo"
-        placeholder="Titulo completo"
-        textoBoton="ADIVINAR"
-      />
-    </ScrollView>
+        <ModalGenerico
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onConfirm={manejarAdivinanza}
+          titulo="Adivina el titulo"
+          placeholder="Titulo completo"
+          textoBoton="ADIVINAR"
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

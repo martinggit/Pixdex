@@ -6,7 +6,8 @@ import { guardarAlias, obtenerAliasExistente } from "@/src/services/firestoreHel
 import { useNavigation, useRouter } from "expo-router";
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
@@ -72,63 +73,65 @@ export default function ContenidoSlugRoute() {
 
 
   return (
-<ScrollView style={[styles.screenContainer]}>
-    <View style={styles.container}>
-      <View style={{ alignSelf: "flex-start" }}>
-        <BotonPix
-          text="VOLVER"
-          iconName="arrow-back"
-          onPress={handleBack}
-          iconFamily="Ionicons"
-        />
-      </View>
-        <View style={styles.borde}>
-            <View style={styles.contentWrapper}>
-                <Text style ={styles.title}>Desafío del Ahorcado </Text>
-                <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
-                  Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
-                </Text>
-                <Text style ={{color:colors.grisOscuro, marginTop:5, textAlign:"center"}}>
-                  *Para que se guarde tu puntaje debes iniciar sesión*
-                </Text>
-                <TouchableOpacity style={styles.button} onPress={handleIniciarJuegoPress}> 
-                    <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
-                </TouchableOpacity>
+  <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
+    <ScrollView style={[styles.screenContainer]}>
+        <View style={styles.container}>
+          <View style={{ alignSelf: "flex-start" }}>
+            <BotonPix
+              text="VOLVER"
+              iconName="arrow-back"
+              onPress={handleBack}
+              iconFamily="Ionicons"
+            />
+          </View>
+            <View style={styles.borde}>
+                <View style={styles.contentWrapper}>
+                    <Text style ={styles.title}>Desafío del Ahorcado </Text>
+                    <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
+                      Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
+                    </Text>
+                    <Text style ={{color:colors.grisOscuro, marginTop:5, textAlign:"center"}}>
+                      *Para que se guarde tu puntaje debes iniciar sesión*
+                    </Text>
+                    <TouchableOpacity style={styles.button} onPress={handleIniciarJuegoPress}> 
+                        <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
+                    </TouchableOpacity>
 
-                <Text style ={styles.players}>Top 10 Mejores Jugadores</Text>
-                
-                <View style={styles.top10}>
-                  {Array.from({ length: 10 }).map((_, i) => {
-                    const jugador = top10[i];
-                    return (
-                      <View key={jugador?.id || i} style={styles.jugadorFila}>
-                        <Text style={styles.nombreJugador}>
-                          {i + 1}. {jugador ? (jugador.alias?.trim() ? jugador.alias : "Anónimo") : `Sin datos${loadingDots[i]}`}
-                        </Text>
-                        <Text style={styles.puntaje}>
-                          {jugador ? jugador.puntaje : "-"}
-                        </Text>
-                      </View>
-                    );
-                  })}
+                    <Text style ={styles.players}>Top 10 Mejores Jugadores</Text>
+                    
+                    <View style={styles.top10}>
+                      {Array.from({ length: 10 }).map((_, i) => {
+                        const jugador = top10[i];
+                        return (
+                          <View key={jugador?.id || i} style={styles.jugadorFila}>
+                            <Text style={styles.nombreJugador}>
+                              {i + 1}. {jugador ? (jugador.alias?.trim() ? jugador.alias : "Anónimo") : `Sin datos${loadingDots[i]}`}
+                            </Text>
+                            <Text style={styles.puntaje}>
+                              {jugador ? jugador.puntaje : "-"}
+                            </Text>
+                          </View>
+                        );
+                      })}
+                    </View>
+                    
                 </View>
-                
             </View>
         </View>
-    </View>
 
-    {/* Modal genérico */}
-      <ModalGenerico
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onConfirm={iniciarJuego}
-        titulo="Escribe tu nombre"
-        placeholder="..."
-        textoBoton="EMPEZAR JUEGO"
-      />
-</ScrollView>
-);
-}
+        {/* Modal genérico */}
+          <ModalGenerico
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            onConfirm={iniciarJuego}
+            titulo="Escribe tu nombre"
+            placeholder="..."
+            textoBoton="EMPEZAR JUEGO"
+          />
+    </ScrollView>
+  </SafeAreaView>
+  );
+  }
 
 const styles = StyleSheet.create({
 screenContainer: { flex: 1},

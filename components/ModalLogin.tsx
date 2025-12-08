@@ -62,7 +62,7 @@ export default function ModalLogin({ visible, onClose, onSuccess, onRegister }: 
           </TouchableOpacity>
 
           {/* Botón para registrarse */}
-          <Text style={{ color: colors.blanco, fontFamily: "PixelFont", marginTop:20, alignItems:"center" }}>
+          <Text style={{ color: colors.blanco, fontFamily: "PixelFont", marginTop:20, textAlign:"center" }}>
               ¿No tenés usuario?
           </Text>
 
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: "PixelFont",
     color: "white",
     marginBottom: 20,
+    textAlign:"center",
   },
   input: {
     width: "100%",

@@ -3,6 +3,7 @@ import colors from "@/src/constants/colors";
 import { useNavigation, useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons"; 
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContenidoSlugRoute() {
   const router = useRouter();
@@ -17,38 +18,40 @@ export default function ContenidoSlugRoute() {
   };
 
   return (
-    <View style={styles.screenContainer}>
-      <View style={styles.container}>
-        {/* Botón Volver */}
-        <View style={{ alignSelf: "flex-start" }}>
-          <BotonPix
-            text="VOLVER"
-            iconName="arrow-back"
-            onPress={handleBack}
-            iconFamily="Ionicons" 
-          />
-        </View>
-
-        {/* Borde y Contenido Principal */}
-        <View style={styles.borde}>
-          <View style={styles.contentWrapper}>
-            <Text style={styles.title}>Pixel Reveal</Text>
-
-            {/* Ícono de Construcción */}
-            <MaterialCommunityIcons
-              name="tools" 
-              size={100}
-              color={colors.verde}
-              style={{ marginVertical: 40 }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
+      <View style={styles.screenContainer}>
+        <View style={styles.container}>
+          {/* Botón Volver */}
+          <View style={{ alignSelf: "flex-start" }}>
+            <BotonPix
+              text="VOLVER"
+              iconName="arrow-back"
+              onPress={handleBack}
+              iconFamily="Ionicons" 
             />
-            
-            <Text style={styles.description}>
-              Estamos trabajando duro para traer este desafío. ¡Estate atento a las actualizaciones!
-            </Text>
+          </View>
+
+          {/* Borde y Contenido Principal */}
+          <View style={styles.borde}>
+            <View style={styles.contentWrapper}>
+              <Text style={styles.title}>Pixel Reveal</Text>
+
+              {/* Ícono de Construcción */}
+              <MaterialCommunityIcons
+                name="tools" 
+                size={100}
+                color={colors.verde}
+                style={{ marginVertical: 40 }}
+              />
+              
+              <Text style={styles.description}>
+                Estamos trabajando duro para traer este desafío. ¡Estate atento a las actualizaciones!
+              </Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
