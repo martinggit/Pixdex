@@ -58,12 +58,17 @@ Incluye autenticación, listas filtradas, navegación completa y persistencia de
 git clone https://github.com/martinggit/Pixdex.git
 ```
 
-### 2️⃣ Instalar dependencias
+### 2️⃣ Ubicarse en el proyecto
+```bash
+cd Pixdex
+```
+
+### 3️⃣ Instalar dependencias
 ```bash
 npm install
 ```
 
-### 3️⃣ Configurar variables de entorno
+### 4️⃣ Configurar variables de entorno
 Crear un archivo .env en la raíz del proyecto:
 
 ```bash
@@ -77,14 +82,11 @@ EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=YOUR_MEASUREMENT_ID
 ```
 ⚠️ Las claves NO están incluidas en el repositorio.
 
-### 4️⃣ Iniciar el proyecto
+### 5️⃣ Iniciar el proyecto
 ```bash
 npx expo start
 ```
+
 Abrir con:
 - Expo Go (Android)
 - Emulador Android Studio
-
-### 📄 Licencia
-
-MIT — libre para usar, modificar y distribuir.

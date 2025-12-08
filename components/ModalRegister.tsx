@@ -58,7 +58,7 @@ export default function ModalRegister({ visible, onClose, onSuccess }: Props) {
 
           <TextInput
             style={styles.input}
-            placeholder="Password"
+            placeholder="Contraseña"
             placeholderTextColor="#aaa"
             secureTextEntry
             value={password}

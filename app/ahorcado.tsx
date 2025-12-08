@@ -86,9 +86,11 @@ export default function ContenidoSlugRoute() {
             <View style={styles.contentWrapper}>
                 <Text style ={styles.title}>Desafío del Ahorcado </Text>
                 <Text style ={styles.description}>Adivina los títulos de populares Shows de TV, 
-                Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
+                  Películas, y Anime una letra a la vez. Tenés 5 vidas - podes obtener el puntaje más alto?
                 </Text>
-
+                <Text style ={{color:colors.grisOscuro, marginTop:5, textAlign:"center"}}>
+                  *Para que se guarde tu puntaje debes iniciar sesión*
+                </Text>
                 <TouchableOpacity style={styles.button} onPress={handleIniciarJuegoPress}> 
                     <Text style ={styles.buttonText}>INICIAR JUEGO</Text>
                 </TouchableOpacity>
