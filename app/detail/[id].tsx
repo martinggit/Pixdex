@@ -1,10 +1,10 @@
 import { BotonPix } from "@/components/BotonPix";
+import { Etiqueta } from "@/components/Etiqueta";
 import colors from "@/src/constants/colors";
 import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useContext } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Etiqueta } from "@/components/Etiqueta";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContenidoSlugRoute() {
@@ -67,7 +67,7 @@ export default function ContenidoSlugRoute() {
 
               <Text style={styles.description}>{contenido?.descripcion}</Text>
               
-              <Text style={styles.genresTitle}>Generos</Text>
+              <Text style={styles.genresTitle}>Géneros</Text>
               <View style={styles.genreList}>
                 {generosNombres
                   ?.filter((g): g is string => typeof g === "string")

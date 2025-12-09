@@ -1,12 +1,12 @@
 import { BotonPix } from "@/components/BotonPix";
 import ModalGenerico from "@/components/ModalGenerico";
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import colors from "@/src/constants/colors";
 import { guardarAlias, obtenerAliasExistente } from "@/src/services/firestoreHelpers";
 import { useNavigation, useRouter } from "expo-router";
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ContenidoSlugRoute() {
@@ -15,6 +15,8 @@ export default function ContenidoSlugRoute() {
   const [modalVisible, setModalVisible] = useState(false);
   const [top10, setTop10] = useState<any[]>([]);
   const [loadingDots, setLoadingDots] = useState<string[]>(Array(10).fill(""));
+  const [nombreInicial, setNombreInicial] = useState(""); 
+  const [esEditable, setEsEditable] = useState(true);     
 
   useEffect(() => {
   const interval = setInterval(() => {
@@ -56,21 +58,41 @@ export default function ContenidoSlugRoute() {
     }
   };
 
- const iniciarJuego = async (nombre: string) => {
-    await guardarAlias(nombre); // Guarda alias si no existe
+  const iniciarJuego = async (nombre: string) => {
+    // Solo guardamos el alias en la BD si el usuario está autenticado
+    if (auth.currentUser) {
+       await guardarAlias(nombre); 
+    }
+    
     setModalVisible(false);
     router.push({ pathname: "../juegos/juegoAhorcado", params: { nombre } });
   };
 
   const handleIniciarJuegoPress = async () => {
+    // Invitado (No logueado)
+    if (!auth.currentUser) {
+      setNombreInicial("Invitado"); // Texto fijo
+      setEsEditable(false);         // Bloqueamos el input
+      setModalVisible(true);        
+      return;
+    }
+
+    // Usuario Logueado
     const aliasExistente = await obtenerAliasExistente();
-    if (!aliasExistente) {
-      setModalVisible(true);
+    
+    if (aliasExistente) {
+      // YA TIENE ALIAS -> Pasa directo al juego
+      router.push({ 
+        pathname: "../juegos/juegoAhorcado", 
+        params: { nombre: aliasExistente } 
+      });
     } else {
-      router.push({ pathname: "../juegos/juegoAhorcado", params: { nombre: aliasExistente } });
+      // NO TIENE ALIAS -> Muestra modal para elegirlo
+      setNombreInicial("");
+      setEsEditable(true);    // Puede escribir
+      setModalVisible(true);
     }
   };
-
 
   return (
   <SafeAreaView style={{ flex: 1, backgroundColor: colors.fondo }}>
@@ -124,9 +146,11 @@ export default function ContenidoSlugRoute() {
             visible={modalVisible}
             onClose={() => setModalVisible(false)}
             onConfirm={iniciarJuego}
-            titulo="Escribe tu nombre"
+            titulo={esEditable ? "Escribe tu nombre" : "Modo Invitado"} 
             placeholder="..."
             textoBoton="EMPEZAR JUEGO"
+            valorInicial={nombreInicial} 
+            editable={esEditable}
           />
     </ScrollView>
   </SafeAreaView>

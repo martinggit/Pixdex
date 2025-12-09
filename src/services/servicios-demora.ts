@@ -1,7 +1,7 @@
 import { IContenidoAudiovisual } from "@/src/data/contenidosAudiovisuales";
-import { getContenidos, getGeneros, getTipos } from "./servicios";
 import { IGeneroContenidoAudiovisual } from "../data/generosContenidoAudiovisual";
 import { ITipoContenidoAudiovisual } from "../data/tiposContenidoAudiovisual";
+import { getContenidos, getGeneros, getTipos } from "./servicios";
 
 export function getTiposConDemora(): Promise<ITipoContenidoAudiovisual[]> {
   return new Promise((resolve, reject) => {
@@ -12,7 +12,7 @@ export function getTiposConDemora(): Promise<ITipoContenidoAudiovisual[]> {
       } catch (error) {
         reject(error);
       }
-    }, 2000);
+    }, 4000);
   });
 }
 
@@ -38,6 +38,6 @@ export function getGenerosConDemora(): Promise<IGeneroContenidoAudiovisual[]> {
       } catch (error) {
         reject(error);
       }
-    }, 2000);
+    }, 6000);
   });
 }

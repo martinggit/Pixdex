@@ -1,71 +1,100 @@
-import { useContext, useEffect, useState } from "react"; // Importar useState
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { AudiovisualesContext } from "@/src/context/audiovisual-context";
 import colors from "@/src/constants/colors";
+import { AudiovisualesContext } from "@/src/context/audiovisual-context";
+import { useContext, useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 // Para probar con o sin demora
-import { 
-  getContenidosConDemora as getContenidos, 
-  getGenerosConDemora as getGeneros, 
-  getTiposConDemora as getTipos 
+import {
+  getContenidosConDemora as getContenidos,
+  getGenerosConDemora as getGeneros,
+  getTiposConDemora as getTipos
 } from "@/src/services/servicios-demora";
 
-// Para producción, usar:
 // import { getContenidos, getGeneros, getTipos } from "@/src/services/servicios";
 
 export function Initializer({ onFinish }: { onFinish: () => void }) {
   const { setContenidos, setGeneros, setTipos } = useContext(AudiovisualesContext);
-  // 1. Estado para el contador de segundos
+  
+  // Estado para el contador
   const [seconds, setSeconds] = useState(0); 
 
+  // Estado para la Checklist visual
+  const [checklist, setChecklist] = useState({
+    contenidos: false,
+    generos: false,
+    tipos: false,
+  });
+
   useEffect(() => {
-    // 2. Iniciar el contador: se ejecuta cada 1000ms (1 segundo)
     const intervalId = setInterval(() => {
       setSeconds(prevSeconds => prevSeconds + 1);
     }, 1000);
 
     const fetchAll = async () => {
       try {
-        console.log(" Iniciando carga de datos con demora...");
+        console.log("Iniciando carga...");
         
+        const pContenidos = getContenidos().then((data) => {
+            setChecklist(prev => ({ ...prev, contenidos: true }));
+            return data;
+        });
+
+        const pGeneros = getGeneros().then((data) => {
+            setChecklist(prev => ({ ...prev, generos: true }));
+            return data;
+        });
+
+        const pTipos = getTipos().then((data) => {
+            setChecklist(prev => ({ ...prev, tipos: true }));
+            return data;
+        });
+
         const [contenidos, generos, tipos] = await Promise.all([
-          getContenidos(),
-          getGeneros(),
-          getTipos(),
+          pContenidos,
+          pGeneros,
+          pTipos,
         ]);
         
-        console.log(" Datos cargados:", { 
-          contenidos: contenidos.length, 
-          generos: generos.length, 
-          tipos: tipos.length 
-        });
-        
+        // Guardamos en contexto global
         setContenidos(contenidos);
         setGeneros(generos);
         setTipos(tipos);
+
       } catch (e) {
-        console.error(" Error al inicializar la app:", e);
+        console.error("Error al inicializar:", e);
       } finally {
-        // 3. Detener el contador cuando finaliza la carga
         clearInterval(intervalId);
-        onFinish();
+        // Pequeña pausa al final para ver todos los checks en verde 
+        setTimeout(() => onFinish(), 1000); 
       }
     };
 
     fetchAll();
 
-    // 4. Limpieza: también se detiene el contador si la componente se desmonta
     return () => clearInterval(intervalId);
-  }, []); // El array de dependencias vacío asegura que se ejecute solo una vez
+  }, []); 
+
+  // Componente auxiliar para renderizar cada item de la lista
+  const CheckItem = ({ label, done }: { label: string, done: boolean }) => (
+    <Text style={[styles.checkItem, done && styles.checkItemDone]}>
+      {done ? "[ OK ]" : "[ ... ]"} {label}
+    </Text>
+  );
 
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color={colors.purpura} />
+      
       <Text style={styles.text}>Cargando datos...</Text>
       
-      {/* 5. Mostrar el contador de segundos */}
+      <View style={styles.checklistContainer}>
+        <CheckItem label="Tipos de contenido" done={checklist.tipos} />
+        <CheckItem label="Géneros disponibles" done={checklist.generos} />
+        <CheckItem label="Catálogo audiovisual" done={checklist.contenidos} />
+      </View>
+
       <Text style={styles.subtext}>
-        {`Esto puede tardar unos segundos (${seconds}s)`}
+        {`Tiempo transcurrido: ${seconds}s`}
       </Text>
     </View>
   );
@@ -77,18 +106,32 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.fondo,
-    gap: 10,
+    gap: 20, 
   },
   text: {
     color: colors.blanco,
     fontFamily: "PixelFont",
-    fontSize: 14,
+    fontSize: 16,
     textAlign: "center",
+    marginBottom: 10,
+  },
+  checklistContainer: {
+    alignItems: "flex-start", 
+    gap: 6,
+  },
+  checkItem: {
+    color: colors.grisOscuro, 
+    fontFamily: "PixelFont",
+    fontSize: 12,
+  },
+  checkItemDone: {
+    color: colors.verde,
   },
   subtext: {
-    color: colors.grisOscuro,
+    color: colors.gris,
     fontFamily: "PixelFont",
-    fontSize: 8,
+    fontSize: 10,
     textAlign: "center",
+    marginTop: 20,
   },
 });

@@ -1,6 +1,6 @@
 // components/ModalGenerico.tsx
 import colors from "@/src/constants/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 type Props = {
@@ -9,7 +9,9 @@ type Props = {
   onConfirm: (inputValue: string) => void;  // Recibo el texto ingresado
   titulo?: string;           
   placeholder?: string;      
-  textoBoton?: string;      
+  textoBoton?: string;    
+  valorInicial?: string;
+  editable?: boolean; 
 };
 
 export default function ModalGenerico({
@@ -19,8 +21,16 @@ export default function ModalGenerico({
   titulo = "Ingresá un texto",
   placeholder = "Escribe aquí...",
   textoBoton = "Confirmar",
+  valorInicial = "",      
+  editable = true,        
 }: Props) {
   const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    if (visible) {
+      setInputValue(valorInicial);
+    }
+  }, [visible, valorInicial]);
 
   const handleConfirm = () => {
     if (inputValue.trim() !== "") {
@@ -41,11 +51,15 @@ export default function ModalGenerico({
           <Text style={styles.titulo}>{titulo}</Text>
           
           <TextInput
-            style={styles.input}
+            style={[
+                styles.input, 
+                !editable && styles.inputDisabled 
+            ]}
             placeholder={placeholder}
             placeholderTextColor="#aaa"
             value={inputValue}
             onChangeText={setInputValue}
+            editable={editable}
           />
           
           <TouchableOpacity style={styles.boton} onPress={handleConfirm}>
@@ -75,6 +89,7 @@ const styles = StyleSheet.create({
     fontFamily: "PixelFont",
     color: "white",
     marginBottom: 20,
+    textAlign:"center",
   },
   input: {
     width: "100%",
@@ -84,6 +99,11 @@ const styles = StyleSheet.create({
     color: "white",
     marginBottom: 20,
     fontFamily: "PixelFont",
+  },
+  inputDisabled: {
+    backgroundColor: "#333", 
+    opacity: 0.7,
+    borderColor: colors.gris,
   },
   boton: {
     backgroundColor: colors.purpura,
