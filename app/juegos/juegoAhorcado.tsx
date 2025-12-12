@@ -29,10 +29,11 @@ export default function ContenidoSlugRoute() {
   
   const limpiarTitulo = (titulo: string): string => {
   return titulo
+    .replace(/:/g, "")
     .toLowerCase()
     // Borra todo lo que NO sea letras (a-z, ñ, acentos) ni espacios (\s)
     .replace(/[^a-záéíóúüñ\s]/g, "") 
-    // Opcional: Si quedaran dobles espacios por borrar algo del medio, esto deja uno solo
+    // Si quedaran dobles espacios por borrar algo del medio, esto deja uno solo
     .replace(/\s+/g, " ") 
     .trim(); 
 };
@@ -90,7 +91,16 @@ export default function ContenidoSlugRoute() {
     setModalFinVisible(true);
   };
 
-  const handleBack = () => {
+  const handleBack = async () => {
+    // Si tiene puntos, intentamos guardarlos antes de salir
+    if (puntos > 0) {
+      try {
+        await guardarPuntaje(puntos);
+      } catch (error) {
+        console.log("No se pudo guardar puntaje", error);
+      }
+    }
+    // Salimos directo sin preguntar
     router.replace("/"); 
   };
 
@@ -191,16 +201,24 @@ export default function ContenidoSlugRoute() {
 
                 <View style={styles.panelLetras}>
                   <Text style={styles.letrasTexto}>
-                    {contenidoActual && 
-                      limpiarTitulo(contenidoActual.nombre)
+                    {limpiarTitulo(contenidoActual.nombre)
                       .split("")
-                      .map((char, index) =>
-                        char === " "
-                          ? "  " // Espacio visual
-                          : letrasAdivinadas.includes(char)
-                          ? char // Muestra la letra si ya la adivinó
-                          : "_"  // Muestra guion si no
-                      )
+                      .map((char, index, arr) => {
+                        // Si es espacio, dejamos separación doble
+                        if (char === " ") return "  "; 
+                        
+                        const adivinada = letrasAdivinadas.includes(char);
+                        const letraMostrada = adivinada ? char : "_";
+
+                        // CONDICIÓN DE MAYÚSCULA:
+                        // Si es el índice 0 (inicio de la frase).
+                        // O si el caracter anterior (arr[index-1]) es un espacio.
+                        if (adivinada && (index === 0 || arr[index - 1] === " ")) {
+                          return letraMostrada.toUpperCase();
+                        }
+                        
+                        return letraMostrada;
+                      })
                       .join(" ")}
                   </Text>
                 </View>
