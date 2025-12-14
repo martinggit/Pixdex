@@ -164,3 +164,4 @@ npx expo start
 Abrir con:
 - Expo Go (Android)
 - Emulador Android Studio
+- Desde la web
