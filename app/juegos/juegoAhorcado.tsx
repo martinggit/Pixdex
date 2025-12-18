@@ -92,17 +92,17 @@ export default function ContenidoSlugRoute() {
   };
 
   const handleBack = async () => {
-    // Si tiene puntos, intentamos guardarlos antes de salir
-    if (puntos > 0) {
-      try {
-        await guardarPuntaje(puntos);
-      } catch (error) {
-        console.log("No se pudo guardar puntaje", error);
-      }
-    }
-    // Salimos directo sin preguntar
-    router.replace("/"); 
-  };
+    // Guardo si hay puntos y si no se guardaron ya 
+    if (puntos > 0 && !puntajeGuardado) { 
+      try {
+        await guardarPuntaje(puntos);
+      } catch (error) {
+        console.log("No se pudo guardar puntaje", error);
+      }
+    }
+    // Salimos directo sin preguntar
+    router.replace("/"); 
+  };
 
   const elegirContenidoAleatorio = () => {
     const restantes = contenidoRestante.length > 0 ? contenidoRestante : [...contenidos];
